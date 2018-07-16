@@ -1,18 +1,19 @@
 from flask import Flask
 from flask_cors import CORS
 from config import db_create
-from config import config
 
 def app_create(debug=False):
     app = Flask(__name__)
 
-    db_create(app)
+    mongo_db = db_create(app)
     CORS(app)
 
-    return app
+    return app, mongo_db
 
+APP, MONGO = app_create()
 
-app = app_create()
+from routes.naslovnica import naslovnica_bp
+APP.register_blueprint(naslovnica_bp)
 
-if __name__=='__main__':
-    app.run()
+if __name__ == '__main__':
+    APP.run()
