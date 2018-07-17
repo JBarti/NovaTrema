@@ -1,11 +1,9 @@
 from flask import jsonify
-from naslovna.app import MONGO
+
 
 class DataHandler:
-
-    def __init__(self):
-        global MONGO
-        self.mongo_db = MONGO.db
+    def __init__(self, db):
+        self.mongo_db = db
         self.collection = {}
         self.data = {}
 

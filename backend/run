@@ -20,5 +20,5 @@ fi
 if [ "$1" == "naslovnica" ]
 then
     export PYTHONPATH="$PYTHONPATH:/config"
-    python3 ./naslovna/app.py
+    python3 ./naslovnica/app.py
 fi
