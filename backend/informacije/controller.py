@@ -2,12 +2,12 @@ from flask import jsonify
 
 class DataHandler:
     def __init__(self, db):
-        self.collection = db.natjecaji
+        self.pageData = db.natjecaji.findOne()
 
     def get_page_data(self):
         json_data = jsonify(
             {
-                "dokumenti": self.collection["dokumenti"],
+                "dokumenti": self.pageData["dokumenti"],
             }
         )
         return json_data
