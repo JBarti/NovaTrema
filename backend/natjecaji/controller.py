@@ -3,16 +3,10 @@ from flask import jsonify
 
 class DataHandler:
     def __init__(self, db):
-        self.pageData = db.natjecaji.findOne()
+        self.db = db.db.natjecaji
 
     def get_page_data(self):
         json_data = jsonify(
-            {
-                "slika": self.pageData["slika"],
-                "naslov": self.pageData["naslov"],
-                "datum": self.pageData["datum"],
-                "ukratko": self.pageData["ukratko"],
-                "tekst": self.pageData["tekst"],
-            }
+            self.db.find_one()
         )
         return json_data

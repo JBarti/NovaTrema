@@ -3,16 +3,10 @@ from flask import jsonify, Blueprint
 
 class DataHandler:
     def __init__(self, db):
-        self.pageData = db.onama.findOne()
+        self.db = db.db.onama
 
     def get_page_data(self):
         json_data = jsonify(
-            {
-                "kontakti": self.pageData["kontakti"],
-                "poslovanje": self.pageData["poslovanje"],
-                "projekti": self.pageData["projekti"],
-                "profesori": self.pageData["profesori"],
-                "nagrade": self.pageData["nagrade"],
-            }
+            self.db.find_one()
         )
         return json_data

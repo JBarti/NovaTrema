@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from config import db_create
 
@@ -18,6 +18,12 @@ APP, MONGO = app_create()
 @APP.route('/test', methods=['GET'])
 def test():
     return "test"
+
+
+@APP.route('/', methods=['GET'])
+def index():
+    data = MONGO.db.naslovnica.findOne()
+    return jsonify(data)
 
 
 if __name__ == '__main__':
