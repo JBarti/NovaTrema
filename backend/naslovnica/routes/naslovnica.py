@@ -18,20 +18,10 @@ def naslovnica():
     return data
 
 
-@naslovnica_bp.route('/slika', methods=['POST'])
-def update_slika():
+@naslovnica_bp.route('/<value>', methods=['GET', 'POST'])
+def update_slika(value):
     data_handler = DataHandler(MONGO.db)
-    slika = request.get_json()['slika']
-    if slika is not None:
-        data_handler.post_background_photo(slika)
+    data = request.get_json()
+    data_handler.check_value(value, data)
 
-    return data_handler.get_page_data()
-
-
-@naslovnica_bp.route('/post', methods=['POST'])
-def add_post():
-    data_handler = DataHandler(MONGO.db)
-    post_data = request.get_json()
-    data_handler.post_new_post(post_data)
-
-    return data_handler.get_page_data()
+    return None
