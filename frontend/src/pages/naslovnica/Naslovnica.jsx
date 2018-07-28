@@ -5,7 +5,7 @@ class Naslovnica extends Component {
     render() {
         return (
             <div className='naslovnica'>
-                Mirko
+
             </div>
         );
     }

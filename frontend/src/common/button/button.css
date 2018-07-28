@@ -1,0 +1,14 @@
+.button{
+    width: fit-content;
+    padding: 20px;
+    background-color: lightblue;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+.button:hover{
+    cursor: pointer;
+    filter: brightness(75%)
+}

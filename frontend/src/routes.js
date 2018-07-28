@@ -7,8 +7,8 @@ import Naslovnica from './pages/naslovnica/Naslovnica.jsx'
 export default (
     <BrowserRouter>
         <Switch>
-            <Route path='/naslovnica' component={Naslovnica} />
-            <Route path='/test' component={App} />
+            <Route exact path='/naslovnica' component={Naslovnica} />
+            <Route exact path='/test' component={App} />
         </Switch>
     </BrowserRouter>
 )

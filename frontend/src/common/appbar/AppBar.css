@@ -1,0 +1,11 @@
+.appbar{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: space-between;
+    padding-left: 150px;
+    padding-right: 50px;
+}
+.appbar__button-container{
+   padding: 0;
+}
