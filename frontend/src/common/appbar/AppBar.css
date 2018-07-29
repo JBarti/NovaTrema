@@ -3,9 +3,13 @@
     flex-direction: row;
     flex-grow: 1;
     justify-content: space-between;
+    align-items: center;
     padding-left: 150px;
-    padding-right: 50px;
+    padding-right: 150px;
+    background-color: turquoise;
+    height: 60px;
 }
 .appbar__button-container{
    padding: 0;
 }
+

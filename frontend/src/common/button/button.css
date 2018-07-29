@@ -1,14 +1,16 @@
 .button{
     width: fit-content;
-    padding: 20px;
-    background-color: lightblue;
     text-transform: uppercase;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-grow: 1;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    height: 100%;
+    box-sizing: border-box;
 }
 .button:hover{
     cursor: pointer;
-    filter: brightness(75%)
+    border-bottom: 5px solid gold
 }

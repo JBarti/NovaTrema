@@ -1,34 +1,26 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Button from '../button/button.jsx'
-import SearchBar from '../search-bar/search-bar'
+import SearchBar from '../search-bar/Search-bar.jsx'
 import './AppBar.css'
+import '../search-bar/SearchBar.css'
 
 class AppBar extends Component {
 
     state = {
-        
+
     }
 
-    inputHandler = (event) =>{
-        this.setState({[event.target.name]: event.target.value})
+    inputHandler = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
     }
 
     render() {
         return (
-            <div className='appbar'>
-                <div className='appbar appbar__button-container'>
-                    <Button>Cmarina</Button>
-                    <Button>Cmarina</Button>
-                    <Button>Cmarina</Button>
-                    <Button>Cmarina</Button>
-                    <Button>Cmarina</Button>
-                    <Button>Cmarina</Button>
-                    <Button>Cmarina</Button>
-                </div>
-                <SearchBar 
-                    value={this.state.value} 
-                    name='mirko' 
+            <div className='appbar' style={this.props.style}>
+                <SearchBar
+                    value={this.state.value}
+                    name='appBar1'
                     onChange={this.inputHandler}
                 ></SearchBar>
                 {this.props.children}
