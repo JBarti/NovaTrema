@@ -1,11 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import './Image-lock.css'
+import './Image-block.css'
 
 class ImageBlock extends Component {
+
     render() {
+
+        let imageBlockStyle = {
+            width: this.props.width,
+            height: this.props.height,
+            backgroundImage: this.props.src
+        }
+
         return (
-            <div className='image-block' style={this.props.style} src=""></div>
+            <div className='image-block' style={this.props.imageBlockStyle}>
+                {this.props.children}
+            </div>
         );
     }
 }

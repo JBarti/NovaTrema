@@ -7,22 +7,9 @@ import '../search-bar/SearchBar.css'
 
 class AppBar extends Component {
 
-    state = {
-
-    }
-
-    inputHandler = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
-    }
-
     render() {
         return (
             <div className='appbar' style={this.props.style}>
-                <SearchBar
-                    value={this.state.value}
-                    name='appBar1'
-                    onChange={this.inputHandler}
-                ></SearchBar>
                 {this.props.children}
             </div >
         );

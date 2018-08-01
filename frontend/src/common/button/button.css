@@ -12,5 +12,5 @@
 }
 .button:hover{
     cursor: pointer;
-    border-bottom: 5px solid gold
+    border-bottom: 5px solid;
 }
