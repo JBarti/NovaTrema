@@ -1,29 +1,28 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import './Block.css'
+import './TextBlock.css'
 
-class Block extends Component {
+class TextBlock extends Component {
 
     render() {
 
         let style = {
             width: this.props.width,
             height: this.props.height,
-            backgroundColor: this.props.backgroundColor,
         }
 
         return (
-            <div className='block' style={style}>
+            <div className='textBlock' style={style}>
                 {this.props.children}
             </div >
         );
     }
 }
 
-Block.propTypes = {
+TextBlock.propTypes = {
     children: PropTypes
-        .oneOfType([PropTypes.object, PropTypes.array])
+        .string
         .isRequired,
 }
 
-export default Block
+export default TextBlock

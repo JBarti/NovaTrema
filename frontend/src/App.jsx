@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.scss';
+import './App.css';
 import AppBar from './common/appbar/AppBar.jsx'
 import Button from './common/button/button.jsx'
 import SearchBar from './common/search-bar/Search-bar.jsx'
@@ -18,7 +18,7 @@ class App extends Component {
 
   render() {
 
-    const appBarBigStyle = {
+    const appBarBig = {
       backgroundColor: "#ffdd23",
       height: "60px"
     }
@@ -40,7 +40,7 @@ class App extends Component {
     return (
       <div className="App">
         <ImageBlock></ImageBlock>
-        <AppBar style={appBarBigStyle}>
+        <AppBar style={appBarBig}>
           <Button style={buttonAppBarBigStyle}>Naslovnica</Button>
           <Button style={buttonAppBarBigStyle}>Novosti</Button>
           <Button style={buttonAppBarBigStyle}>O nama</Button>
@@ -59,8 +59,7 @@ class App extends Component {
           <Button>Radno vrijeme školske knjiznice</Button>
           <Button>Primanja roditelja</Button>
         </AppBar>
-        <Block width="100vw" height="500px" backgroundColor="red"></Block>
-      </div>
+      </div >
     );
   }
 }
