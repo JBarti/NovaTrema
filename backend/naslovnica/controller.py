@@ -25,79 +25,138 @@ class DataHandler:
         case = options.get(key, None)
         if case is not None:
             return case(data)
-        return None
+        return "Inserted key is not valid"
 
     def change_back_photo(self, img_data):
         data = self.db.find_one()
         current = data
-        if type(img_data["url"]) == str:
-            data['slika']['url'] = img_data
-            self.db.replace_one(current, data)
-        return None
+        if len(img_data.keys()) == 1:
+            try:
+                if img_data['url'] == str:
+                    data['slika']['url'] = img_data
+                    self.db.replace_one(current, data)
+                    return img_data
+                else:
+                    return "TypeError: The data sent is not of the required type"
+            except KeyError:
+                return "KeyError: Received data has an unknown key"
+
+        return "Error: Sent data does not have the required number of keys"
 
     def add_new_post(self, post_data):
         data = self.db.find_one()
         current = data
-        check = {
-            "title": "string",
-            "body": "body",
-            "date": datetime.now(),
-            "publisher": "publisher",
-            "img": "img"
-        }
-
-        try:
-            date = parse_date(post_data["date"])
-            post_data["date"] = date
-
-        except ValueError:
-            return None
+        check = ["title", "body", "date", "publihser", "img"]
 
         try:
             valid = True
             for key in post_data:
-                if type(check[key]) != type(post_data[key]):
+                if str != type(post_data[key]):
                     valid = False
+            if len(check) == len(post_data.keys()):
+                return "Error: Sent data does not have the required number of keys"
             if valid:
                 data['novosti'].append(post_data)
                 self.db.replace_one(current, data)
 
         except KeyError:
-            return None
+            return "Key Error: Received data has an unknown key"
 
-        return None
+        return post_data
 
-    def add_new_achievement(self, data):
-        pass
+    def add_new_achievement(self, achievement_data):
+        data = self.db.find_one()
+        current = data
+        check = ["ikona", "tekst"]
 
-    def add_new_college(self, data):
-        pass
+        try:
+            valid = True
+            for key in achievement_data:
+                if str != type(achievement_data[key]):
+                    valid = False
+            if len(check) != len(achievement_data):
+                return "Error: Sent data does not have the required number of keys"
+            if valid:
+                data['postignuca'].append(achievement_data)
+                self.db.replace_one(current, data)
 
-    def add_new_subject(self, data):
-        pass
+        except KeyError:
+            return "Key Error: Received data has an unknown key"
 
-    def add_new_contact(self, data):
-        pass
+        return achievement_data
 
-    def add_new_link(self, data):
-        pass
+    def add_new_college(self, college_data):
+        data = self.db.find_one()
+        current = data
 
+        if len(college_data.keys()) == 1:
+            try:
+                if type(college_data['ikona']) == str:
+                    data['faksovi'].append(college_data)
+                    self.db.replace_one(current, data)
+                    return college_data
+                else:
+                    return "TypeError: The data sent is not of the required type"
+            except KeyError:
+                return "KeyError: Received data has an unknown key"
 
-def parse_date(text_date):
+        return "Error: Sent data does not have the required number of keys"
 
-    dict_month = {
-        "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5,
-        "Jun": 6, "Jul": 7, "Aug": 8, "Sept": 9, "Oct": 10,
-        "Nov": 11, "Dec": 12
-    }
+    def add_new_subject(self, subject_data):
+        data = self.db.find_one()
+        current = data
 
-    lst_date = text_date.split()
-    lst_time = lst_date[4].split(':')
+        if len(subject_data.keys()) == 1:
+            try:
+                if type(subject_data['ikona']) == str:
+                    data['predmeti'].append(subject_data)
+                    self.db.replace_one(current, data)
+                    return subject_data
+                else:
+                    return "TypeError: The data sent is not of the required type"
+            except KeyError:
+                return "KeyError: Received data has an unknown key"
 
-    yyyy = int(lst_date[3])
-    mm = int(dict_month[lst_date[1]])
-    dd = int(lst_date[2])
-    h = int(lst_time[0])
-    _min = int(lst_time[1])
+        return "Error: Sent data does not have the required number of keys"
 
-    return datetime(yyyy, mm, dd, h, _min)
+    def add_new_contact(self, contact_data):
+        data = self.db.find_one()
+        current = data
+        check = ["ime", "broj"]
+
+        try:
+            valid = True
+            for key in contact_data:
+                if str != type(contact_data[key]):
+                    valid = False
+            if len(check) != len(contact_data):
+                return "Error: Sent data does not have the required number of keys"
+            if valid:
+                data['kontakti'].append(contact_data)
+                self.db.replace_one(current, data)
+
+        except KeyError:
+            return "Key Error: Received data has an unknown key"
+
+        return contact_data
+
+    def add_new_link(self, link_data):
+        data = self.db.find_one()
+        current = data
+        check = ["ime", "link"]
+
+        try:
+            valid = True
+            for key in link_data:
+                if str != type(link_data[key]):
+                    valid = False
+            if len(check) != len(link_data):
+                return "Error: Sent data does not have the required number of keys"
+            if valid:
+                data['linkovi'].append(link_data)
+                self.db.replace_one(current, data)
+
+        except KeyError:
+            return "Key Error: Received data has an unknown key"
+
+        return link_data
