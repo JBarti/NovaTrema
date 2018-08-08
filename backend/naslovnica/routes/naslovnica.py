@@ -20,8 +20,9 @@ def naslovnica():
 
 @naslovnica_bp.route('/<value>', methods=['GET', 'POST'])
 def update_slika(value):
-    data_handler = DataHandler(MONGO.db)
-    data = request.get_json()
-    data_handler.check_value(value, data)
+    if request.method != 'GET':
+        data_handler = DataHandler(MONGO.db)
+        data = request.get_json()
+        data_handler.check_value(value, data, request.method)
 
     return None

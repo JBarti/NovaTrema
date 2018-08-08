@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, abort
 from datetime import datetime
 
 
@@ -12,40 +12,59 @@ class DataHandler:
         )
         return json_data
 
-    def check_value(self, key, data):
-        options = {
+    def check_value(self, key, data, req_method):
+        post_options = {
             "slika": self.change_back_photo,
             "novost": self.add_new_post,
             "uspjeh": self.add_new_achievement,
             "faks": self.add_new_college,
             "predmet": self.add_new_subject,
-            "konakt": self.add_new_contact,
+            "kontakt": self.add_new_contact,
             "link": self.add_new_link
         }
-        case = options.get(key, None)
+        put_options = {
+            "novost": self.update_post,
+            "uspjeh": self.update_achievement,
+            "kontakt": self.update_contact,
+            "link": self.update_link
+        }
+
+        delete_options = {
+            "novost": self.delete_post,
+            "uspjeh": self.delete_achievement,
+            "faks": self.delete_college,
+            "predmet": self.delete_subject,
+            "kontakt": self.delete_contact,
+            "link": self.delete_link
+        }
+
+        if req_method == 'POST':
+            case = post_options.get(key, None)
+        elif req_method == 'PUT':
+            case = put_options.get(key, None)
+        elif req_method == 'DELETE':
+            case = delete_options.get(key, None)
+
         if case is not None:
             return case(data)
-        return "Inserted key is not valid"
+        return abort(404)
 
     def change_back_photo(self, img_data):
         data = self.db.find_one()
-        current = data
         if len(img_data.keys()) == 1:
             try:
                 if img_data['url'] == str:
-                    data['slika']['url'] = img_data
-                    self.db.replace_one(current, data)
+                    self.db.update_one(data, {'$set': {'slika': img_data['url']}}})
                     return img_data
                 else:
-                    return "TypeError: The data sent is not of the required type"
+                    return abort(400)
             except KeyError:
-                return "KeyError: Received data has an unknown key"
+                return abort(400)
 
-        return "Error: Sent data does not have the required number of keys"
+        return abort(400)
 
     def add_new_post(self, post_data):
         data = self.db.find_one()
-        current = data
         check = ["title", "body", "date", "publihser", "img"]
 
         try:
@@ -54,109 +73,139 @@ class DataHandler:
                 if str != type(post_data[key]):
                     valid = False
             if len(check) == len(post_data.keys()):
-                return "Error: Sent data does not have the required number of keys"
+                return abort(400)
             if valid:
-                data['novosti'].append(post_data)
-                self.db.replace_one(current, data)
+                current = data['novosti']
+                self.db.update_one(
+                    data, {'$set': {'novosti': current.append(post_data)}})
 
         except KeyError:
-            return "Key Error: Received data has an unknown key"
+            return abort(400)
 
         return post_data
 
     def add_new_achievement(self, achievement_data):
-        data = self.db.find_one()
-        current = data
-        check = ["ikona", "tekst"]
+        data=self.db.find_one()
+        check=["ikona", "tekst"]
 
         try:
-            valid = True
+            valid=True
             for key in achievement_data:
                 if str != type(achievement_data[key]):
-                    valid = False
+                    valid=False
             if len(check) != len(achievement_data):
-                return "Error: Sent data does not have the required number of keys"
+                return abort(400)
             if valid:
-                data['postignuca'].append(achievement_data)
-                self.db.replace_one(current, data)
+                current=data['postignuca']
+                self.db.update_one(
+                    data, {'$set': {'postignuca': current.append(achievement_data)}})
 
         except KeyError:
-            return "Key Error: Received data has an unknown key"
+            return abort(400)
 
         return achievement_data
 
     def add_new_college(self, college_data):
-        data = self.db.find_one()
-        current = data
+        data=self.db.find_one()
 
         if len(college_data.keys()) == 1:
             try:
                 if type(college_data['ikona']) == str:
-                    data['faksovi'].append(college_data)
-                    self.db.replace_one(current, data)
+                    current=data['faksovi']
+                    self.db.update_one(
+                        data, {'$set': {'faksovi': current.append(college_data)}})
                     return college_data
                 else:
-                    return "TypeError: The data sent is not of the required type"
+                    return abort(404)
             except KeyError:
-                return "KeyError: Received data has an unknown key"
+                return abort(400)
 
-        return "Error: Sent data does not have the required number of keys"
+        return abort(400)
 
     def add_new_subject(self, subject_data):
-        data = self.db.find_one()
-        current = data
+        data=self.db.find_one()
 
         if len(subject_data.keys()) == 1:
             try:
                 if type(subject_data['ikona']) == str:
-                    data['predmeti'].append(subject_data)
-                    self.db.replace_one(current, data)
+                    current=data['predmeti']
+                    self.db.update_one(
+                        data, {'$set': {'predmeti': current.append(subject_data)}})
                     return subject_data
                 else:
-                    return "TypeError: The data sent is not of the required type"
+                    return abort(404)
             except KeyError:
-                return "KeyError: Received data has an unknown key"
+                return abort(400)
 
-        return "Error: Sent data does not have the required number of keys"
+        return abort(400)
 
     def add_new_contact(self, contact_data):
-        data = self.db.find_one()
-        current = data
-        check = ["ime", "broj"]
+        data=self.db.find_one()
+        check=["ime", "broj"]
 
         try:
-            valid = True
+            valid=True
             for key in contact_data:
                 if str != type(contact_data[key]):
-                    valid = False
+                    valid=False
             if len(check) != len(contact_data):
-                return "Error: Sent data does not have the required number of keys"
+                return abort(400)
             if valid:
-                data['kontakti'].append(contact_data)
-                self.db.replace_one(current, data)
+                current=data['kontakti']
+                self.db.update_one(data, {'$set'{'kontakti': current.append(contact_data)}})
 
         except KeyError:
-            return "Key Error: Received data has an unknown key"
+            return abort(400)
 
         return contact_data
 
     def add_new_link(self, link_data):
-        data = self.db.find_one()
-        current = data
-        check = ["ime", "link"]
+        data=self.db.find_one()
+        check=["ime", "link"]
 
         try:
-            valid = True
+            valid=True
             for key in link_data:
                 if str != type(link_data[key]):
-                    valid = False
+                    valid=False
             if len(check) != len(link_data):
-                return "Error: Sent data does not have the required number of keys"
+                return abort(400)
             if valid:
-                data['linkovi'].append(link_data)
-                self.db.replace_one(current, data)
+                current=data['linkovi']
+                self.db.update_one(
+                    data, {'$set': {'linkovi': current.append(link_data)}})
 
         except KeyError:
-            return "Key Error: Received data has an unknown key"
+            return abort(400)
 
         return link_data
+
+    def update_post(self, post_data):
+        pass
+
+    def update_achievement(self, achievement_data):
+        pass
+
+    def update_contact(self, contact_data):
+        pass
+
+    def update_link(self, link_data):
+        pass
+
+    def delete_post(self):
+        pass
+
+    def delete_achievement(self):
+        pass
+
+    def delete_college(self):
+        pass
+
+    def delete_subject(self):
+        pass
+
+    def delete_contact(self):
+        pass
+
+    def delete_link(self):
+        pass
