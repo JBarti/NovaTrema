@@ -1,5 +1,5 @@
 from app import MONGO
-from flask import Blueprint, request
+from flask import Blueprint, request, abort
 from controller import DataHandler
 
 naslovnica_bp = Blueprint('naslovnica_api', __name__, url_prefix='/naslovnica')
@@ -24,5 +24,6 @@ def update_slika(value):
         data_handler = DataHandler(MONGO.db)
         data = request.get_json()
         data_handler.check_value(value, data, request.method)
+        return data
 
-    return None
+    return abort(400)
