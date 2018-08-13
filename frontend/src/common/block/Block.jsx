@@ -7,8 +7,10 @@ class Block extends Component {
     render() {
 
         let style = {
-            width: this.props.width,
-            height: this.props.height,
+            paddingTop: this.props.paddingTop,
+            paddingBottom: this.props.paddingBottom,
+            paddingLeft: this.props.paddingLeft,
+            paddingRight: this.props.paddingRight,
             backgroundColor: this.props.backgroundColor,
         }
 

@@ -1,4 +1,10 @@
-.appBarBig{
-    background-color: #ffdd23;
-    height: "60px"
+.intro-block__title{
+    font-size: 42px;
+    position: relative;
+    left: -75px;
+}
+.intro-block__text{
+    height: 290px;
+    width: 550px;
+    text-align: justify;
 }

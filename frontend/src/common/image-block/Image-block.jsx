@@ -13,7 +13,7 @@ class ImageBlock extends Component {
         }
 
         return (
-            <div className='image-block' style={this.props.imageBlockStyle}>
+            <div className='image-block' style={imageBlockStyle}>
                 {this.props.children}
             </div>
         );
