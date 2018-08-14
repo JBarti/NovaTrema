@@ -8,3 +8,12 @@
     width: 550px;
     text-align: justify;
 }
+.photo-news-demo__title{
+    font-size: 18px;
+    text-transform: uppercase;
+}
+.photo-news-demo__text{
+    width: 280px;
+    height: 95px;
+    text-align: justify;
+}

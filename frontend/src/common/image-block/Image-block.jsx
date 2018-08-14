@@ -13,9 +13,9 @@ class ImageBlock extends Component {
         }
 
         return (
-            <div className='image-block' style={imageBlockStyle}>
+            <div className='image-block' style={Object.assign({}, imageBlockStyle, this.props.variant)}>
                 {this.props.children}
-            </div>
+            </div >
         );
     }
 }
