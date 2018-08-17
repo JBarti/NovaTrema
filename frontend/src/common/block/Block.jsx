@@ -15,7 +15,7 @@ class Block extends Component {
         }
 
         return (
-            <div className='block' style={style}>
+            <div className='block' style={Object.assign({}, style, this.props.variant)}>
                 {this.props.children}
             </div >
         );

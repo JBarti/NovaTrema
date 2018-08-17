@@ -52,7 +52,9 @@ class App extends Component {
       marginTop: "120px",
     }
 
-
+    const achievmentStyle = {
+      flexDirection: "column"
+    }
 
     return (
       <div className="App">
@@ -101,15 +103,15 @@ class App extends Component {
               variant={Object.assign({}, photoNewsDemoStyle, photoNewsDemoStyleTop)}
               width="389.625px"
               height="279.375px">
-              <p className="photo-news-demo__title">naslov</p>
-              <p className="photo-news-demo__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam metus magna, imperdiet sed ligula vitae, interdum pretium risus.</p>
+              <p className="title">naslov</p>
+              <p className="text text--newsDemo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam metus magna, imperdiet sed ligula vitae, interdum pretium risus.</p>
             </ImageBlock>
             <ImageBlock
               variant={photoNewsDemoStyle}
               width="389.625px"
               height="279.375px">
-              <p className="photo-news-demo__title">naslov</p>
-              <p className="photo-news-demo__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam metus magna, imperdiet sed ligula vitae, interdum pretium risus.</p>
+              <p className="title">naslov</p>
+              <p className="text text--newsDemo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam metus magna, imperdiet sed ligula vitae, interdum pretium risus.</p>
             </ImageBlock>
           </div>
           <div style={rowSecondDemoStyle}>
@@ -117,16 +119,52 @@ class App extends Component {
               variant={Object.assign({}, photoNewsDemoStyle, photoNewsDemoStyleTop)}
               width="389.625px"
               height="279.375px">
-              <p className="photo-news-demo__title">naslov</p>
-              <p className="photo-news-demo__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam metus magna, imperdiet sed ligula vitae, interdum pretium risus.</p>
+              <p className="title">naslov</p>
+              <p className="text text--newsDemo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam metus magna, imperdiet sed ligula vitae, interdum pretium risus.</p>
             </ImageBlock>
             <ImageBlock
               variant={photoNewsDemoStyle}
               width="389.625px"
               height="279.375px">
-              <p className="photo-news-demo__title">naslov</p>
-              <p className="photo-news-demo__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam metus magna, imperdiet sed ligula vitae, interdum pretium risus.</p>
+              <p className="title">naslov</p>
+              <p className="text text--newsDemo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam metus magna, imperdiet sed ligula vitae, interdum pretium risus.</p>
             </ImageBlock>
+          </div>
+        </Block>
+        <Block
+          paddingTop="80px"
+          paddingBottom="40px"
+          paddingLeft="150px"
+          paddingRight="150px"
+          backgroundColor="lightBlue"
+          variant={achievmentStyle}
+        >
+          <div className="achievment-container">
+            <div className="achievment">
+              <ImageBlock height="115px" width="115px"></ImageBlock>
+              <p className="title title--achievment">lorem ipsum</p>
+              <p className="text">lorem ipsum</p>
+            </div>
+            <div className="achievment">
+              <ImageBlock height="115px" width="115px"></ImageBlock>
+              <p className="title title--achievment">lorem ipsum</p>
+              <p className="text">lorem ipsum</p>
+            </div>
+            <div className="achievment">
+              <ImageBlock height="115px" width="115px"></ImageBlock>
+              <p className="title title--achievment">lorem ipsum</p>
+              <p className="text">lorem ipsum</p>
+            </div>
+            <div className="achievment">
+              <ImageBlock height="115px" width="115px"></ImageBlock>
+              <p className="title title--achievment">lorem ipsum</p>
+              <p className="text">lorem ipsum</p>
+            </div>
+          </div>
+          <div className="navigation">
+            <div className="navigation-ball navigation-ball--selected"></div>
+            <div className="navigation-ball"></div>
+            <div className="navigation-ball"></div>
           </div>
         </Block>
       </div >
