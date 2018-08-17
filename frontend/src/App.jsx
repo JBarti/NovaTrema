@@ -167,6 +167,18 @@ class App extends Component {
             <div className="navigation-ball"></div>
           </div>
         </Block>
+        <Block
+          paddingTop="65px"
+          paddingBottom="65px"
+          paddingLeft="160px"
+          paddingRight="160px"
+          backgroundColor="lightCoral"
+        >
+          <ImageBlock width="258.75px" height="127.5px"></ImageBlock>
+          <ImageBlock width="258.75px" height="127.5px"></ImageBlock>
+          <ImageBlock width="258.75px" height="127.5px"></ImageBlock>
+          <ImageBlock width="258.75px" height="127.5px"></ImageBlock>
+        </Block>
       </div >
     );
   }
