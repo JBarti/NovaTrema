@@ -4,19 +4,28 @@ from datetime import datetime
 
 class DataHandler:
     def __init__(self, db):
-        self.db = db.naslovnica
+        self.db = db
 
     def get_page_data(self):
-        data = self.db.find()
+        data = self.db.naslovnica.find()
+        list_of_posts = [post for post in self.db.novosti.find()]
+        latest_four = []
         parsed_data = {}
         for document in data:
-            parsed_data[data.keys()[0]] = document
+            parsed_data[document.keys()[0]] = document
 
+        while len(latest_four) != 4 or len(list_of_posts) == 0:
+            latest_post = [post for post in list_of_posts if parse_date(post['date']) == max(
+                parse_date(post['date']) for post in list_of_posts)][0]
+            latest_four.append(latest_post)
+            list_of_posts.remove(latest_post)
+
+        parsed_data['news'] = latest_four
         return jsonify(parsed_data)
 
     def check_value(self, key, data, req_method):
         post_options = {
-            "slika": self.change_back_photo,
+            "slika": self.add_back_photo,
             "novost": self.add_new_post,
             "uspjeh": self.add_new_achievement,
             "faks": self.add_new_college,
@@ -51,13 +60,13 @@ class DataHandler:
             return case(data)
         return abort(404)
 
-    def change_back_photo(self, img_data):
-        data = self.db.find({'slika': {'$exists': True}})
+    def add_back_photo(self, img_data):
+        data = self.db.naslovnica.find({'slika': {'$exists': True}})
         if len(img_data.keys()) == 1:
             try:
                 if img_data['url'] == str:
                     self.db.update_one(
-                        data, {'$set': {'slika': img_data['url']}})
+                        data, {'$set': {'slika': img_data}})
                     return img_data
                 else:
                     return abort(400)
@@ -67,7 +76,6 @@ class DataHandler:
         return abort(400)
 
     def add_new_post(self, post_data):
-        data = self.db.find({'novosti': {'$exists': True}})
         check = ["title", "body", "date", "publihser", "img"]
 
         try:
@@ -75,12 +83,10 @@ class DataHandler:
             for key in post_data:
                 if str != type(post_data[key]):
                     valid = False
-            if len(check) == len(post_data.keys()):
+            if len(check) != len(post_data.keys()):
                 return abort(400)
             if valid:
-                current = data['novosti']
-                self.db.update_one(
-                    data, {'$set': {'novosti': current.append(post_data)}})
+                self.db.novosti.insert(post_data)
 
         except KeyError:
             return abort(400)
@@ -88,7 +94,7 @@ class DataHandler:
         return post_data
 
     def add_new_achievement(self, achievement_data):
-        data = self.db.find({'postignuca': {'$exists': True}})
+        data = self.db.naslovnica.find({'postignuca': {'$exists': True}})
         check = ["ikona", "tekst"]
 
         try:
@@ -109,7 +115,7 @@ class DataHandler:
         return achievement_data
 
     def add_new_college(self, college_data):
-        data = self.db.find({'faksovi': {'$exists': True}})
+        data = self.db.naslovnica.find({'faksovi': {'$exists': True}})
 
         if len(college_data.keys()) == 1:
             try:
@@ -126,7 +132,7 @@ class DataHandler:
         return abort(400)
 
     def add_new_subject(self, subject_data):
-        data = self.db.find({'predmeti': {'$exists': True}})
+        data = self.db.naslovnica.find({'predmeti': {'$exists': True}})
 
         if len(subject_data.keys()) == 1:
             try:
@@ -143,7 +149,6 @@ class DataHandler:
         return abort(400)
 
     def add_new_contact(self, contact_data):
-        data = self.db.find({'kontakti': {'$exists': True}})
         check = ["ime", "broj"]
 
         try:
@@ -154,9 +159,7 @@ class DataHandler:
             if len(check) != len(contact_data):
                 return abort(400)
             if valid:
-                current = data['kontakti']
-                self.db.update_one(
-                    data, {'$set': {'kontakti': current.append(contact_data)}})
+                self.db.contacts.insert(contact_data)
 
         except KeyError:
             return abort(400)
@@ -164,7 +167,7 @@ class DataHandler:
         return contact_data
 
     def add_new_link(self, link_data):
-        data = self.db.find({'linkovi': {'$exists': True}})
+        data = self.db.naslovnica.find({'linkovi': {'$exists': True}})
         check = ["ime", "link"]
 
         try:
@@ -213,3 +216,23 @@ class DataHandler:
 
     def delete_link(self):
         pass
+
+
+def parse_date(text_date):
+
+    dict_month = {
+        "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5,
+        "Jun": 6, "Jul": 7, "Aug": 8, "Sept": 9, "Oct": 10,
+        "Nov": 11, "Dec": 12
+    }
+
+    lst_date = text_date.split()
+    lst_time = lst_date[4].split(':')
+
+    yyyy = int(lst_date[3])
+    mm = int(dict_month[lst_date[1]])
+    dd = int(lst_date[2])
+    h = int(lst_time[0])
+    _min = int(lst_time[1])
+
+    return datetime(yyyy, mm, dd, h, _min)
