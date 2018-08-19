@@ -196,7 +196,7 @@ class DataHandler:
                 return abort(400)
             if valid:
                 self.db.novosti.update_one(
-                    post_data['_id'], post_data)
+                    {"_id": post_data['_id']}, post_data)
         except KeyError:
             return abort(400)
 
@@ -214,7 +214,7 @@ class DataHandler:
                 return abort(400)
             if valid:
                 self.db.postignuca.update_one(
-                    achievement_data['_id'], achievement_data)
+                    {"_id": achievement_data['_id']}, achievement_data)
 
         except KeyError:
             return abort(400)
@@ -222,7 +222,18 @@ class DataHandler:
         return achievement_data
 
     def update_contact(self, contact_data):
-        pass
+        check = ["name", "number"]
+
+        try:
+            valid = True
+            for key in contact_data:
+                if str! = type(contact_data[key]) and key != '_id':
+                    valid = False
+            if len(check)+1 != len(contact_data):
+                return abort(400)
+            if valid:
+                self.db.contacts.update_one(
+                    {"_id": contact_data['_id']}, contact_data)
 
     def update_link(self, link_data):
         pass
