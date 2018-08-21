@@ -1,6 +1,5 @@
 from flask import jsonify, abort
 from datetime import datetime
-from flask_pymongo import pymongo
 
 
 class DataHandler:
