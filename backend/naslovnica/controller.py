@@ -8,6 +8,9 @@ class DataHandler:
         self.db = db
 
     def get_page_data(self):
+        
+        """Return data required for page /naslovnica"""
+        
         data = self.db.naslovnica.find()
         list_of_posts = [post for post in self.db.novosti.find()]
         latest_four = []
@@ -25,46 +28,32 @@ class DataHandler:
         return jsonify(parsed_data)
 
     def check_value(self, key, data, req_method):
-        post_options = {
-            "slika": self.upload_back_photo,
-            "ravnateljica": self.upload_headmaster_hello,
-            "novost": self.add_new_post,
-            "uspjeh": self.add_new_achievement,
-            "faks": self.add_new_college,
-            "predmet": self.add_new_subject,
-            "kontakt": self.add_new_contact,
-            "link": self.add_new_link
-        }
-        put_options = {
-            "slika": self.upload_back_photo,
-            "ravnateljica": self.upload_headmaster_hello,
-            "novost": self.update_post,
-            "uspjeh": self.update_achievement,
-            "kontakt": self.update_contact,
-            "link": self.update_link
-        }
 
-        delete_options = {
-            "novost": self.delete_post,
-            "uspjeh": self.delete_achievement,
-            "faks": self.delete_college,
-            "predmet": self.delete_subject,
-            "kontakt": self.delete_contact,
-            "link": self.delete_link
-        }
+        """
+        Checks what kind of request is sent on what route and then calls function accordingly
+        Returns 404 Not Found page if bad route is sent
+
+        Arguments:
+        key -- string from the end of the route
+            proper values are: 'image', 'headmaster', 'post', 'achievement', 'college', 'subject',
+            'contact', 'link'
+        data -- data which is sent with the request
+        req_method -- type of request
+
+        """
 
         if req_method == 'POST':
-            case = post_options.get(key, None)
+            case = getattr(self, "add_new_"+key, None)
         elif req_method == 'PUT':
-            case = put_options.get(key, None)
+            case = getattr(self, "update_"+key, None)
         elif req_method == 'DELETE':
-            case = delete_options.get(key, None)
+            case = getattr(self, "delete_"+key, None)
 
         if case is not None:
             return case(data)
         return abort(404)
 
-    def upload_back_photo(self, img_data):
+    def add_new_image(self, img_data):
         data = self.db.naslovnica.find({'image': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({"image": {}})
@@ -84,7 +73,7 @@ class DataHandler:
 
         return img_data
 
-    def upload_headmaster_hello(self, hello_data):
+    def add_new_headmaster(self, hello_data):
         data = self.db.naslovnica.find({'headmaster': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'headmaster': {}})
@@ -216,6 +205,41 @@ class DataHandler:
 
         return link_data
 
+    def update_image(self, img_data):
+        data = self.db.naslovnica.find({'image': {'$exists': True}})
+
+        try:
+            valid = True
+            if not isinstance(img_data['url'], str):
+                valid = False
+            if len(img_data.keys()) != 1:
+                return abort(400)
+            if valid:
+                self.db.naslovnica.update_one(
+                    data, {"$set": {"image": img_data}})
+        except KeyError:
+            return abort(400)
+
+        return img_data
+
+    def update_headmaster(self, hello_data):
+        data = self.db.naslovnica.find({'headmaster': {'$exists': True}})
+
+        try:
+            valid = True
+            for key in hello_data:
+                if not isinstance(hello_data[key], str):
+                    valid = False
+            if len(hello_data.keys()) != 2:
+                return abort(400)
+            if valid:
+                self.db.naslovnica.update_one(
+                    data, {"$set": {"headmaster": hello_data}})
+        except KeyError:
+            return abort(400)
+
+        return hello_data
+    
     def update_post(self, post_data):
         try:
             valid = True
