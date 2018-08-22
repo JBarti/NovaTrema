@@ -8,7 +8,7 @@ class DataHandler:
 
     def get_page_data(self):
         
-        """Return data required for page /naslovnica"""
+        """Returns data required for main page"""
         
         data = self.db.naslovnica.find()
         list_of_posts = [post for post in self.db.novosti.find()]
@@ -29,7 +29,7 @@ class DataHandler:
     def check_value(self, key, data, req_method):
 
         """
-        Checks what kind of request is sent on what route and then calls function accordingly
+        Checks what kind of request is sent on what route and then returns a function call accordingly
         Returns 404 Not Found page if bad route is sent
 
         Arguments:
@@ -53,6 +53,17 @@ class DataHandler:
         return abort(404)
 
     def add_new_image(self, img_data):
+
+        """
+        Method is called on its corresponding route 
+        Adds an background image to database
+        Returns the same data if no errors, elsewise it returns the http status code for bad request
+
+        Arguments: 
+        img_data -- dictionary containing image data
+
+        """
+
         data = self.db.naslovnica.find({'image': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({"image": {}})
@@ -73,6 +84,16 @@ class DataHandler:
         return img_data
 
     def add_new_headmaster(self, hello_data):
+
+        """
+        Method is called on its corresponding route 
+        Adds the headmaster welcome data to database 
+        Returns the same data if no errors, elsewise it returns the http status code for bad request ( 400) 
+
+        Arguments: 
+        hello_data -- dictionary containing headmaster welcome data 
+
+        """
         data = self.db.naslovnica.find({'headmaster': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'headmaster': {}})
@@ -94,6 +115,16 @@ class DataHandler:
         return hello_data
 
     def add_new_post(self, post_data):
+
+        """
+        Method is called on corresponding route
+        Adds a new post to the database
+        Returns the same data if no errors, elsewise it returns the http status code for bad request ( 400)
+
+        Arguments:
+        post_data -- dictionary containing post data
+
+        """
         try:
             valid = True
             for key in post_data:
@@ -110,6 +141,16 @@ class DataHandler:
         return post_data
 
     def add_new_achievement(self, achievement_data):
+        
+        """
+        Method is called on corresponding route 
+        Adds a new achievement to the database 
+        Returns the same data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        achievement_data -- dictionary containing achievement data
+
+        """
         try:
             valid = True
             for key in achievement_data:
@@ -126,6 +167,17 @@ class DataHandler:
         return achievement_data
 
     def add_new_college(self, college_data):
+        """
+        Method is called on corresponding route
+        Adds a new college to the database
+        Returns the same data if no errors, elsewise it returns the http status code for bad request ( 400 )
+
+        Arguments:
+        college_data -- dictionary containing college data
+
+        """
+        
+
         data = self.db.naslovnica.find({'colleges': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'colleges': []})
@@ -146,6 +198,16 @@ class DataHandler:
         return abort(400)
 
     def add_new_subject(self, subject_data):
+        
+        """
+        Method is called on corresponding route 
+        Adds a new subject to the database 
+        Returns the same data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        subject_data -- dictionary containing subject data
+
+        """
         data = self.db.naslovnica.find({'subjects': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'subject': []})
@@ -166,6 +228,17 @@ class DataHandler:
         return abort(400)
 
     def add_new_contact(self, contact_data):
+
+        """
+        Method is called on corresponding route 
+        Adds a new contact to the database 
+        Returns the same data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        contact_data -- dictionary containing contact data
+
+        """
+
         try:
             valid = True
             for key in contact_data:
@@ -182,6 +255,17 @@ class DataHandler:
         return contact_data
 
     def add_new_link(self, link_data):
+        
+        """
+        Method is called on corresponding route 
+        Adds a new link to the database 
+        Returns the same data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        link_data -- dictionary containing link data
+
+        """
+
         data = self.db.naslovnica.find({'links': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'links': []})
@@ -205,7 +289,19 @@ class DataHandler:
         return link_data
 
     def update_image(self, img_data):
+
+        """
+        Method is called on corresponding route 
+        Updates the existing image data in the database
+        Returns the updated data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        img_data -- dictionary containing image data
+
+        """
         data = self.db.naslovnica.find({'image': {'$exists': True}})
+        if not data:
+            abort(400)
 
         try:
             valid = True
@@ -222,7 +318,19 @@ class DataHandler:
         return img_data
 
     def update_headmaster(self, hello_data):
+        
+        """
+        Method is called on corresponding route 
+        Updates the existing headmaster welcome data in the database 
+        Returns the updated data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        hello_data -- dictionary containing headmaster welcome data
+
+        """
         data = self.db.naslovnica.find({'headmaster': {'$exists': True}})
+        if not data:
+            abort(400)
 
         try:
             valid = True
@@ -240,6 +348,16 @@ class DataHandler:
         return hello_data
     
     def update_post(self, post_data):
+        
+        """
+        Method is called on corresponding route 
+        Updates an existing post in the database 
+        Returns the updated data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        post_data -- dictionary containing post data
+
+        """
         try:
             valid = True
             for key in post_data:
@@ -256,6 +374,16 @@ class DataHandler:
         return post_data
 
     def update_achievement(self, achievement_data):
+        
+        """
+        Method is called on corresponding route 
+        Updates an existing achievement in the database 
+        Returns the updated data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        achievement_data -- dictionary containing achievement data
+
+        """
         try:
             valid = True
             for key in achievement_data:
@@ -273,6 +401,16 @@ class DataHandler:
         return achievement_data
 
     def update_contact(self, contact_data):
+      
+        """
+        Method is called on corresponding route 
+        Updates an existing contact in the database 
+        Returns the updated data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        contact_data -- dictionary containing contact data
+
+        """
         try:
             valid = True
             for key in contact_data:
@@ -289,6 +427,16 @@ class DataHandler:
         return contact_data
 
     def update_link(self, link_data):
+        
+        """
+        Method is called on corresponding route 
+        Updates an existing link in the database 
+        Returns the updated data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        link_data -- dictionary containing link data
+
+        """
         data = self.db.naslovnica.find({'links': {'$exists': True}})
         if not data:
             return abort(400)
@@ -314,6 +462,16 @@ class DataHandler:
         return link_data
 
     def delete_post(self, post_data):
+        
+        """
+        Method is called on corresponding route 
+        Deletes a post from the database 
+        Returns the deleted data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        post_data -- dictionary containing post data
+
+        """
         try:
             for post in self.db.novosti.find():
                 if post['_id'] == post_data['_id']:
@@ -325,6 +483,16 @@ class DataHandler:
         return abort(400)
 
     def delete_achievement(self, achievement_data):
+        
+        """
+        Method is called on corresponding route 
+        Deletes a achievement from the database 
+        Returns the deleted data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        achievement_data -- dictionary containing achievement data
+
+        """
         try:
             for achievement in self.db.postignuca.find():
                 if achievement['_id'] == achievement_data['_id']:
@@ -336,7 +504,17 @@ class DataHandler:
         return abort(400)
 
     def delete_college(self, college_data):
-        data = self.db.naslovnica.find({'colleges':{'$exists':True}})
+
+        """
+        Method is called on corresponding route 
+        Deletes a college from the database 
+        Returns the deleted data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        college_data -- dictionary containing college data
+
+        """
+        data = self.db.naslovnica.find({'colleges': {'$exists': True}})
         if not data:
             return abort(400)
         current = data['colleges']
@@ -351,6 +529,16 @@ class DataHandler:
         return college_data
 
     def delete_subject(self, subject_data):
+        
+        """
+        Method is called on corresponding route 
+        Deletes a subject from the database 
+        Returns the deleted data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        subject_data -- dictionary containing subject data
+
+        """
         data = self.db.naslovnica.find({'subjects': {'$exists': True}})
         if not data:
             return abort(400)
@@ -366,6 +554,16 @@ class DataHandler:
         return subject_data
 
     def delete_contact(self, contact_data):
+       
+        """
+        Method is called on corresponding route 
+        Deletes a contact from the database 
+        Returns the deleted data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        contact_data -- dictionary containing contact data
+
+        """
         for contact in self.db.contacts.find():
             if contact['_id'] == contact_data['id']:
                 self.db.postignuca.delete_one(contact)
@@ -373,6 +571,16 @@ class DataHandler:
         return abort(400)
 
     def delete_link(self, link_data):
+        
+        """
+        Method is called on corresponding route 
+        Deletes a link from the database 
+        Returns the deleted data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
+
+        Arguments: 
+        link_data -- dictionary containing link data
+
+        """
         data = self.db.naslovnica.find({'links': {'$exists': True}})
         if not data:
             return abort(400)
@@ -389,6 +597,14 @@ class DataHandler:
 
 
 def parse_date(text_date):
+
+    """
+    Convert js datetime to python datetime
+    Returns a datetime object.
+
+    Arguments:
+    text_date -- string in the format of javascript datetime objects
+    """
 
     dict_month = {
         "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5,
