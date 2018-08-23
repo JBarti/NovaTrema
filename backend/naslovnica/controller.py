@@ -7,9 +7,8 @@ class DataHandler:
         self.db = db
 
     def get_page_data(self):
-        
         """Returns data required for main page"""
-        
+
         data = self.db.naslovnica.find()
         list_of_posts = [post for post in self.db.novosti.find()]
         latest_four = []
@@ -17,17 +16,17 @@ class DataHandler:
         for document in data:
             parsed_data[document.keys()[0]] = document
 
-        while len(latest_four) != 4 or not list_of_posts:
-            latest_post = [post for post in list_of_posts if parse_date(post['date']) == parse_date(max(
-                post['date'] for post in list_of_posts))][0]
-            latest_four.append(latest_post)
-            list_of_posts.remove(latest_post)
+        if list_of_posts:
+            while len(latest_four) != 4 or not list_of_posts:
+                latest_post = [post for post in list_of_posts if parse_date(post['date']) == parse_date(max(
+                    post['date'] for post in list_of_posts))][0]
+                latest_four.append(latest_post)
+                list_of_posts.remove(latest_post)
 
-        parsed_data['news'] = latest_four
+            parsed_data['news'] = latest_four
         return jsonify(parsed_data)
 
     def check_value(self, key, data, req_method):
-
         """
         Checks what kind of request is sent on what route and then returns a function call accordingly
         Returns 404 Not Found page if bad route is sent
@@ -53,7 +52,6 @@ class DataHandler:
         return abort(404)
 
     def add_new_image(self, img_data):
-
         """
         Method is called on its corresponding route 
         Adds an background image to database
@@ -64,10 +62,10 @@ class DataHandler:
 
         """
 
-        data = self.db.naslovnica.find({'image': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'image': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({"image": {}})
-            data = self.db.naslovnica.find({'headmaster': {'$exists': True}})
+            data = self.db.naslovnica.find_one({'image': {'$exists': True}})
 
         try:
             valid = True
@@ -77,14 +75,13 @@ class DataHandler:
                 return abort(400)
             if valid:
                 self.db.naslovnica.update_one(
-                    data, {"$set": {"headmaster": img_data}})
+                    data, {"$set": {"image": img_data}})
         except KeyError:
             return abort(400)
 
-        return img_data
+        return jsonify(img_data)
 
     def add_new_headmaster(self, hello_data):
-
         """
         Method is called on its corresponding route 
         Adds the headmaster welcome data to database 
@@ -94,10 +91,11 @@ class DataHandler:
         hello_data -- dictionary containing headmaster welcome data 
 
         """
-        data = self.db.naslovnica.find({'headmaster': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'headmaster': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'headmaster': {}})
-            data = self.db.naslovnica.find({'headmaster': {'$exists': True}})
+            data = self.db.naslovnica.find_one(
+                {'headmaster': {'$exists': True}})
 
         try:
             valid = True
@@ -115,7 +113,6 @@ class DataHandler:
         return hello_data
 
     def add_new_post(self, post_data):
-
         """
         Method is called on corresponding route
         Adds a new post to the database
@@ -141,7 +138,6 @@ class DataHandler:
         return post_data
 
     def add_new_achievement(self, achievement_data):
-        
         """
         Method is called on corresponding route 
         Adds a new achievement to the database 
@@ -176,12 +172,11 @@ class DataHandler:
         college_data -- dictionary containing college data
 
         """
-        
 
-        data = self.db.naslovnica.find({'colleges': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'colleges': []})
-            data = self.db.naslovnica.find({'colleges': {'$exists': True}})
+            data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
 
         if len(college_data.keys()) == 1:
             try:
@@ -198,7 +193,6 @@ class DataHandler:
         return abort(400)
 
     def add_new_subject(self, subject_data):
-        
         """
         Method is called on corresponding route 
         Adds a new subject to the database 
@@ -208,10 +202,10 @@ class DataHandler:
         subject_data -- dictionary containing subject data
 
         """
-        data = self.db.naslovnica.find({'subjects': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'subjects': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'subject': []})
-            data = self.db.naslovnica.find({'subjects': {'$exists': True}})
+            data = self.db.naslovnica.find_one({'subjects': {'$exists': True}})
 
         if len(subject_data.keys()) == 1:
             try:
@@ -228,7 +222,6 @@ class DataHandler:
         return abort(400)
 
     def add_new_contact(self, contact_data):
-
         """
         Method is called on corresponding route 
         Adds a new contact to the database 
@@ -255,7 +248,6 @@ class DataHandler:
         return contact_data
 
     def add_new_link(self, link_data):
-        
         """
         Method is called on corresponding route 
         Adds a new link to the database 
@@ -266,10 +258,10 @@ class DataHandler:
 
         """
 
-        data = self.db.naslovnica.find({'links': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'links': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'links': []})
-            data = self.db.naslovnica.find({'links': {'$exists': True}})
+            data = self.db.naslovnica.find_one({'links': {'$exists': True}})
 
         try:
             valid = True
@@ -289,7 +281,6 @@ class DataHandler:
         return link_data
 
     def update_image(self, img_data):
-
         """
         Method is called on corresponding route 
         Updates the existing image data in the database
@@ -299,7 +290,7 @@ class DataHandler:
         img_data -- dictionary containing image data
 
         """
-        data = self.db.naslovnica.find({'image': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'image': {'$exists': True}})
         if not data:
             abort(400)
 
@@ -318,7 +309,6 @@ class DataHandler:
         return img_data
 
     def update_headmaster(self, hello_data):
-        
         """
         Method is called on corresponding route 
         Updates the existing headmaster welcome data in the database 
@@ -328,7 +318,7 @@ class DataHandler:
         hello_data -- dictionary containing headmaster welcome data
 
         """
-        data = self.db.naslovnica.find({'headmaster': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'headmaster': {'$exists': True}})
         if not data:
             abort(400)
 
@@ -346,9 +336,8 @@ class DataHandler:
             return abort(400)
 
         return hello_data
-    
+
     def update_post(self, post_data):
-        
         """
         Method is called on corresponding route 
         Updates an existing post in the database 
@@ -374,7 +363,6 @@ class DataHandler:
         return post_data
 
     def update_achievement(self, achievement_data):
-        
         """
         Method is called on corresponding route 
         Updates an existing achievement in the database 
@@ -401,7 +389,6 @@ class DataHandler:
         return achievement_data
 
     def update_contact(self, contact_data):
-      
         """
         Method is called on corresponding route 
         Updates an existing contact in the database 
@@ -427,7 +414,6 @@ class DataHandler:
         return contact_data
 
     def update_link(self, link_data):
-        
         """
         Method is called on corresponding route 
         Updates an existing link in the database 
@@ -437,7 +423,7 @@ class DataHandler:
         link_data -- dictionary containing link data
 
         """
-        data = self.db.naslovnica.find({'links': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'links': {'$exists': True}})
         if not data:
             return abort(400)
 
@@ -462,7 +448,6 @@ class DataHandler:
         return link_data
 
     def delete_post(self, post_data):
-        
         """
         Method is called on corresponding route 
         Deletes a post from the database 
@@ -483,7 +468,6 @@ class DataHandler:
         return abort(400)
 
     def delete_achievement(self, achievement_data):
-        
         """
         Method is called on corresponding route 
         Deletes a achievement from the database 
@@ -504,7 +488,6 @@ class DataHandler:
         return abort(400)
 
     def delete_college(self, college_data):
-
         """
         Method is called on corresponding route 
         Deletes a college from the database 
@@ -514,7 +497,7 @@ class DataHandler:
         college_data -- dictionary containing college data
 
         """
-        data = self.db.naslovnica.find({'colleges': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
         if not data:
             return abort(400)
         current = data['colleges']
@@ -529,7 +512,6 @@ class DataHandler:
         return college_data
 
     def delete_subject(self, subject_data):
-        
         """
         Method is called on corresponding route 
         Deletes a subject from the database 
@@ -539,7 +521,7 @@ class DataHandler:
         subject_data -- dictionary containing subject data
 
         """
-        data = self.db.naslovnica.find({'subjects': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'subjects': {'$exists': True}})
         if not data:
             return abort(400)
         current = data['subjects']
@@ -554,7 +536,6 @@ class DataHandler:
         return subject_data
 
     def delete_contact(self, contact_data):
-       
         """
         Method is called on corresponding route 
         Deletes a contact from the database 
@@ -571,7 +552,6 @@ class DataHandler:
         return abort(400)
 
     def delete_link(self, link_data):
-        
         """
         Method is called on corresponding route 
         Deletes a link from the database 
@@ -581,7 +561,7 @@ class DataHandler:
         link_data -- dictionary containing link data
 
         """
-        data = self.db.naslovnica.find({'links': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'links': {'$exists': True}})
         if not data:
             return abort(400)
         current = data['links']
@@ -597,7 +577,6 @@ class DataHandler:
 
 
 def parse_date(text_date):
-
     """
     Convert js datetime to python datetime
     Returns a datetime object.

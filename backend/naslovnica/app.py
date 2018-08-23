@@ -22,7 +22,7 @@ def test():
 
 @APP.route('/', methods=['GET'])
 def index():
-    data = MONGO.db.naslovnica.findOne()
+    data = MONGO.db.naslovnica.find_one()
     return jsonify(data)
 
 

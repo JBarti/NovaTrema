@@ -1,5 +1,5 @@
 from app import MONGO
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, jsonify
 from controller import DataHandler
 
 naslovnica_bp = Blueprint('naslovnica_api', __name__, url_prefix='/naslovnica')
@@ -19,11 +19,11 @@ def naslovnica():
 
 
 @naslovnica_bp.route('/<value>', methods=['GET', 'POST'])
-def update_slika(value):
+def elementi(value):
     if request.method != 'GET':
         data_handler = DataHandler(MONGO.db)
         data = request.get_json()
         data_handler.check_value(value, data, request.method)
-        return data
+        return jsonify(data)
 
     return abort(400)
