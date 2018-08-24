@@ -61,6 +61,7 @@ class DataHandler:
         img_data -- dictionary containing image data
 
         """
+        check = ["url"]
 
         data = self.db.naslovnica.find_one({'image': {'$exists': True}})
         if not data:
@@ -68,29 +69,29 @@ class DataHandler:
             data = self.db.naslovnica.find_one({'image': {'$exists': True}})
 
         try:
-            valid = True
             if not isinstance(img_data['url'], str):
-                valid = False
-            if len(img_data.keys()) != 1:
                 return abort(400)
-            if valid:
-                self.db.naslovnica.update_one(
-                    data, {"$set": {"image": img_data}})
+            if sorted(img_data.keys()) != sorted(check):
+                return abort(400)
+            self.db.naslovnica.update_one(
+                data, {"$set": {"image": img_data}})
         except KeyError:
             return abort(400)
 
-        return jsonify(img_data)
+        return img_data
 
-    def add_new_headmaster(self, hello_data):
+    def add_new_headmaster(self, welcome_data):
         """
         Method is called on its corresponding route 
         Adds the headmaster welcome data to database 
         Returns the same data if no errors, elsewise it returns the http status code for bad request ( 400) 
 
         Arguments: 
-        hello_data -- dictionary containing headmaster welcome data 
+        welcome_data -- dictionary containing headmaster welcome data 
 
         """
+        check = ["image", "welcome_message"]
+
         data = self.db.naslovnica.find_one({'headmaster': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'headmaster': {}})
@@ -98,19 +99,17 @@ class DataHandler:
                 {'headmaster': {'$exists': True}})
 
         try:
-            valid = True
-            for key in hello_data:
-                if not isinstance(hello_data[key], str):
-                    valid = False
-            if len(hello_data.keys()) != 2:
+            for key in welcome_data:
+                if not isinstance(welcome_data[key], str) and not isinstance(key, str):
+                    return abort(400)
+            if sorted(check) != sorted(welcome_data.keys()):
                 return abort(400)
-            if valid:
-                self.db.naslovnica.update_one(
-                    data, {"$set": {"headmaster": hello_data}})
+            self.db.naslovnica.update_one(
+                data, {"$set": {"headmaster": welcome_data}})
         except KeyError:
             return abort(400)
 
-        return hello_data
+        return welcome_data
 
     def add_new_post(self, post_data):
         """
@@ -122,12 +121,13 @@ class DataHandler:
         post_data -- dictionary containing post data
 
         """
+        check = ["title","body","date", "image", "tldr", "author"]
+
         try:
-            valid = True
             for key in post_data:
-                if not isinstance(post_data[key], str):
-                    valid = False
-            if len(post_data.keys()) != 5:
+                if not isinstance(post_data[key], str) and not isinstance(key, str):
+                    return abort(400)
+            if sorted(post_data.keys()) != sorted(check):
                 return abort(400)
             if valid:
                 self.db.novosti.insert(post_data)
@@ -147,15 +147,15 @@ class DataHandler:
         achievement_data -- dictionary containing achievement data
 
         """
+        check = ["title", "image","body"]
+
         try:
-            valid = True
             for key in achievement_data:
-                if not isinstance(achievement_data[key], str):
-                    valid = False
-            if len(achievement_data) != 3:
+                if not isinstance(achievement_data[key], str) and not isinstance(key, str):
+                    return abort(400)
+            if sorted(achievement_data.keys()) != sorted(check):
                 return abort(400)
-            if valid:
-                self.db.postginuca.insert(achievement_data)
+            self.db.postginuca.insert(achievement_data)
 
         except KeyError:
             return abort(400)
@@ -172,25 +172,26 @@ class DataHandler:
         college_data -- dictionary containing college data
 
         """
+        check = ["icon", "name"]
 
         data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'colleges': []})
             data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
 
-        if len(college_data.keys()) == 1:
-            try:
-                if not isinstance(college_data['icon'], str):
-                    current = data['colleges']
-                    self.db.update_one(
-                        data, {'$set': {'colleges': current.append(college_data)}})
-                    return college_data
-                else:
-                    return abort(404)
-            except KeyError:
+        try:
+            for key in college_data:
+                if not isinstance(college_data[key], str) and not isinstance(key,str):
+                    return abort(400)
+            if sorted(college_data.keys()) != sorted(check):
                 return abort(400)
+            current = data['colleges']
+            self.db.update_one(
+                data, {'$set': {'colleges': current.append(college_data)}})
+        except KeyError:
+            return abort(400)
 
-        return abort(400)
+        return college_data
 
     def add_new_subject(self, subject_data):
         """
@@ -202,24 +203,26 @@ class DataHandler:
         subject_data -- dictionary containing subject data
 
         """
+        check = ["name","icon"]
+
         data = self.db.naslovnica.find_one({'subjects': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'subject': []})
             data = self.db.naslovnica.find_one({'subjects': {'$exists': True}})
 
-        if len(subject_data.keys()) == 1:
-            try:
-                if not isinstance(subject_data['icon'], str):
-                    current = data['subjects']
-                    self.db.update_one(
-                        data, {'$set': {'subjects': current.append(subject_data)}})
-                    return subject_data
-                else:
-                    return abort(404)
-            except KeyError:
-                return abort(400)
+        try:
+            for key in subject_data:
+                if not isinstance(subject_data[key], str) and not isinstance(key, str):
+                    return abort(400)
+                if sorted(check) != sorted(subject_data.keys()):
+                    return abort(400)
+            current = data['subjects']
+            self.db.update_one(
+                data, {'$set': {'subjects': current.append(subject_data)}})
+        except KeyError:
+            return abort(400)
 
-        return abort(400)
+        return subject_data
 
     def add_new_contact(self, contact_data):
         """
@@ -231,16 +234,15 @@ class DataHandler:
         contact_data -- dictionary containing contact data
 
         """
+        check = ["name", "number","mail"]
 
         try:
-            valid = True
             for key in contact_data:
-                if not isinstance(contact_data[key], str):
-                    valid = False
-            if len(contact_data) != 2:
+                if not isinstance(contact_data[key], str) and not isinstance(key, str):
+                    return abort(400)
+            if sorted(check) != sorted(contact_data.keys()):
                 return abort(400)
-            if valid:
-                self.db.contacts.insert(contact_data)
+            self.db.contacts.insert(contact_data)
 
         except KeyError:
             return abort(400)
@@ -257,6 +259,7 @@ class DataHandler:
         link_data -- dictionary containing link data
 
         """
+        check = ["name", "link"]
 
         data = self.db.naslovnica.find_one({'links': {'$exists': True}})
         if not data:
@@ -264,16 +267,14 @@ class DataHandler:
             data = self.db.naslovnica.find_one({'links': {'$exists': True}})
 
         try:
-            valid = True
             for key in link_data:
-                if not isinstance(link_data[key], str):
-                    valid = False
-            if len(link_data) != 2:
+                if not isinstance(link_data[key], str) and not isinstance(key,str):
+                    return abort(400)
+            if sorted(link_data.keys()) != sorted(check):
                 return abort(400)
-            if valid:
-                current = data['links']
-                self.db.update_one(
-                    data, {'$set': {'links': current.append(link_data)}})
+            current = data['links']
+            self.db.update_one(
+                data, {'$set': {'links': current.append(link_data)}})
 
         except KeyError:
             return abort(400)
@@ -290,19 +291,19 @@ class DataHandler:
         img_data -- dictionary containing image data
 
         """
+        check = ["url"]
+
         data = self.db.naslovnica.find_one({'image': {'$exists': True}})
         if not data:
             abort(400)
 
         try:
-            valid = True
             if not isinstance(img_data['url'], str):
-                valid = False
-            if len(img_data.keys()) != 1:
                 return abort(400)
-            if valid:
-                self.db.naslovnica.update_one(
-                    data, {"$set": {"image": img_data}})
+            if sorted(img_data.keys()) != sorted(check):
+                return abort(400)
+            self.db.naslovnica.update_one(
+                data, {"$set": {"image": img_data}})
         except KeyError:
             return abort(400)
 
@@ -318,20 +319,20 @@ class DataHandler:
         hello_data -- dictionary containing headmaster welcome data
 
         """
+        check = ["image", "welcome_message"]
+
         data = self.db.naslovnica.find_one({'headmaster': {'$exists': True}})
         if not data:
             abort(400)
 
         try:
-            valid = True
-            for key in hello_data:
-                if not isinstance(hello_data[key], str):
-                    valid = False
-            if len(hello_data.keys()) != 2:
+            for key in welcome_data:
+                if not isinstance(welcome_data[key], str) and not isinstance(key, str):
+                    return abort(400)
+            if sorted(check) != sorted(welcome_data.keys()):
                 return abort(400)
-            if valid:
-                self.db.naslovnica.update_one(
-                    data, {"$set": {"headmaster": hello_data}})
+            self.db.naslovnica.update_one(
+                data, {"$set": {"headmaster": welcome_data}})
         except KeyError:
             return abort(400)
 
@@ -347,16 +348,16 @@ class DataHandler:
         post_data -- dictionary containing post data
 
         """
+        check = ["title", "body", "date", "image", "tldr", "author", "_id"]
+
         try:
-            valid = True
             for key in post_data:
-                if not isinstance(post_data[key], str) and key != "_id":
-                    valid = False
-            if len(post_data.keys()) != 6:
+                if not isinstance(post_data[key], str) and not isinstance(key,str) and key != "_id":
+                    return abort(400)
+            if sorted(check) != sorted(post_data.keys()):
                 return abort(400)
-            if valid:
-                self.db.novosti.update_one(
-                    {"_id": post_data['_id']}, {"$set": post_data})
+            self.db.novosti.update_one(
+                {"_id": post_data['_id']}, {"$set": post_data})
         except KeyError:
             return abort(400)
 
@@ -372,16 +373,16 @@ class DataHandler:
         achievement_data -- dictionary containing achievement data
 
         """
+        check = ["title", "image", "body", "_id"]
+
         try:
-            valid = True
             for key in achievement_data:
-                if not isinstance(achievement_data[key], str) and key != "_id":
-                    valid = False
-            if len(achievement_data) != 4:
+                if not isinstance(achievement_data[key], str) and not isinstance(key,str) and key != "_id":
+                    return abort(400)
+            if sorted(check) != sorted(achievement_data.keys()):
                 return abort(400)
-            if valid:
-                self.db.postignuca.update_one(
-                    {"_id": achievement_data['_id']}, {"$set": achievement_data})
+            self.db.postignuca.update_one(
+                {"_id": achievement_data['_id']}, {"$set": achievement_data})
 
         except KeyError:
             return abort(400)
@@ -398,16 +399,16 @@ class DataHandler:
         contact_data -- dictionary containing contact data
 
         """
+        check = ["name", "number","mail", "_id"]
+
         try:
-            valid = True
             for key in contact_data:
-                if not isinstance(contact_data[key], str) and key != '_id':
-                    valid = False
-            if len(contact_data) != 3:
+                if not isinstance(contact_data[key], str) and not isinstance(key, str) and key != "key":
+                    return abort(400)
+            if sorted(check) != sorted(contact_data.keys()):
                 return abort(400)
-            if valid:
-                self.db.contacts.update_one(
-                    {"_id": contact_data['_id']}, {"$set": contact_data})
+            self.db.contacts.update_one(
+                {"_id": contact_data['_id']}, {"$set": contact_data})
         except KeyError:
             return abort(400)
 
@@ -423,26 +424,26 @@ class DataHandler:
         link_data -- dictionary containing link data
 
         """
+        check = ["name", "link"]
+
         data = self.db.naslovnica.find_one({'links': {'$exists': True}})
         if not data:
             return abort(400)
 
         try:
-            valid = True
             for key in link_data:
-                if not isinstance(link_data[key], str):
-                    valid = False
-            if len(link_data) != 2:
+                if not isinstance(link_data[key], str) and not isinstance(key,str):
+                    abort(400)
+            if sorted(check) != sorted(link_data.keys()):
                 return abort(400)
-            if valid:
-                current = data['links']
-                for link in data['links']:
-                    if link['name'] == link_data['name'] or link['link'] == link_data['link']:
-                        current.remove(link)
-                        break
-                self.db.update_one(
-                    data, {'$set': {'links': current.append(link_data)}}
-                )
+            current = data['links']
+            for link in data['links']:
+                if link['name'] == link_data['name'] or link['link'] == link_data['link']:
+                    current.remove(link)
+                    break
+            self.db.update_one(
+                data, {'$set': {'links': current.append(link_data)}}
+            )
         except KeyError:
             return abort(400)
         return link_data
@@ -457,6 +458,7 @@ class DataHandler:
         post_data -- dictionary containing post data
 
         """
+
         try:
             for post in self.db.novosti.find():
                 if post['_id'] == post_data['_id']:
