@@ -1,6 +1,6 @@
 from app import MONGO
 from flask import Blueprint, request, abort, jsonify
-from controller import DataHandler
+from controller import DataHandler, JSONEncoder
 
 naslovnica_bp = Blueprint('naslovnica_api', __name__, url_prefix='/naslovnica')
 
@@ -14,16 +14,12 @@ def test():
 def naslovnica():
     data_handler = DataHandler(MONGO.db)
     data = data_handler.get_page_data()
+    return JSONEncoder().encode(data)
 
-    return data
 
-
-@naslovnica_bp.route('/<value>', methods=['GET', 'POST'])
+@naslovnica_bp.route('/<value>', methods=['POST', 'PUT', 'DELETE'])
 def elementi(value):
-    if request.method != 'GET':
-        data_handler = DataHandler(MONGO.db)
-        data = request.get_json()
-        data_handler.check_value(value, data, request.method)
-        return jsonify(data)
-
-    return abort(400)
+    data_handler = DataHandler(MONGO.db)
+    data = request.get_json()
+    returned_data = data_handler.check_value(value, data, request.method)
+    return JSONEncoder().encode(returned_data)

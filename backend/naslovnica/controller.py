@@ -1,6 +1,13 @@
 from flask import jsonify, abort
 from datetime import datetime
+import json
+from bson import ObjectId
 
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
 
 class DataHandler:
     def __init__(self, db):
@@ -14,7 +21,7 @@ class DataHandler:
         latest_four = []
         parsed_data = {}
         for document in data:
-            parsed_data[document.keys()[0]] = document
+            parsed_data[list(document.keys())[0]] = document
 
         if list_of_posts:
             while len(latest_four) != 4 or not list_of_posts:
@@ -24,7 +31,7 @@ class DataHandler:
                 list_of_posts.remove(latest_post)
 
             parsed_data['news'] = latest_four
-        return jsonify(parsed_data)
+        return parsed_data
 
     def check_value(self, key, data, req_method):
         """
@@ -63,10 +70,10 @@ class DataHandler:
         """
         check = ["url"]
 
-        data = self.db.naslovnica.find_one({'image': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'back_image': {'$exists': True}})
         if not data:
-            self.db.naslovnica.insert({"image": {}})
-            data = self.db.naslovnica.find_one({'image': {'$exists': True}})
+            self.db.naslovnica.insert({"back_image": {}})
+            data = self.db.naslovnica.find_one({'back_image': {'$exists': True}})
 
         try:
             if not isinstance(img_data['url'], str):
@@ -74,7 +81,7 @@ class DataHandler:
             if sorted(img_data.keys()) != sorted(check):
                 return abort(400)
             self.db.naslovnica.update_one(
-                data, {"$set": {"image": img_data}})
+                {"back_image":{"$exists":True}}, {"$set": {"back_image": img_data}})
         except KeyError:
             return abort(400)
 
@@ -105,7 +112,7 @@ class DataHandler:
             if sorted(check) != sorted(welcome_data.keys()):
                 return abort(400)
             self.db.naslovnica.update_one(
-                data, {"$set": {"headmaster": welcome_data}})
+                {"headmaster": {"$exists": True}}, {"$set": {"headmaster": welcome_data}})
         except KeyError:
             return abort(400)
 
@@ -129,8 +136,7 @@ class DataHandler:
                     return abort(400)
             if sorted(post_data.keys()) != sorted(check):
                 return abort(400)
-            if valid:
-                self.db.novosti.insert(post_data)
+            self.db.novosti.insert(post_data)
 
         except KeyError:
             return abort(400)
@@ -155,7 +161,7 @@ class DataHandler:
                     return abort(400)
             if sorted(achievement_data.keys()) != sorted(check):
                 return abort(400)
-            self.db.postginuca.insert(achievement_data)
+            self.db.postignuca.insert(achievement_data)
 
         except KeyError:
             return abort(400)
@@ -172,12 +178,15 @@ class DataHandler:
         college_data -- dictionary containing college data
 
         """
+        for document in self.db.naslovnica.find():
+            print(document)
         check = ["icon", "name"]
-
         data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
         if not data:
-            self.db.naslovnica.insert({'colleges': []})
-            data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
+            self.db.naslovnica.insert({'colleges': ["some value"]})
+            data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})    
+
+        print(data['colleges'])
 
         try:
             for key in college_data:
@@ -186,10 +195,11 @@ class DataHandler:
             if sorted(college_data.keys()) != sorted(check):
                 return abort(400)
             current = data['colleges']
-            self.db.update_one(
-                data, {'$set': {'colleges': current.append(college_data)}})
+            self.db.naslovnica.update_one(
+                {"colleges": {"$exists":True}}, {'$set': {'colleges': current.append(college_data)}})
         except KeyError:
             return abort(400)
+        print(data["colleges"])
 
         return college_data
 
@@ -207,7 +217,7 @@ class DataHandler:
 
         data = self.db.naslovnica.find_one({'subjects': {'$exists': True}})
         if not data:
-            self.db.naslovnica.insert({'subject': []})
+            self.db.naslovnica.insert({'subjects': []})
             data = self.db.naslovnica.find_one({'subjects': {'$exists': True}})
 
         try:
@@ -217,8 +227,8 @@ class DataHandler:
                 if sorted(check) != sorted(subject_data.keys()):
                     return abort(400)
             current = data['subjects']
-            self.db.update_one(
-                data, {'$set': {'subjects': current.append(subject_data)}})
+            self.db.naslovnica.update_one(
+                {"subjects": {"$exists": True}}, {'$set': {'subjects': current.append(subject_data)}})
         except KeyError:
             return abort(400)
 
@@ -273,8 +283,8 @@ class DataHandler:
             if sorted(link_data.keys()) != sorted(check):
                 return abort(400)
             current = data['links']
-            self.db.update_one(
-                data, {'$set': {'links': current.append(link_data)}})
+            self.db.naslovnica.update_one(
+                {"links": {"$exists": True}}, {'$set': {'links': current.append(link_data)}})
 
         except KeyError:
             return abort(400)
@@ -302,21 +312,21 @@ class DataHandler:
                 return abort(400)
             if sorted(img_data.keys()) != sorted(check):
                 return abort(400)
-            self.db.naslovnica.update_one(
-                data, {"$set": {"image": img_data}})
+            matches = self.db.naslovnica.update_one(
+                {"headmaster": {"$exists": True}}, {"$set": {"image": img_data}})
         except KeyError:
             return abort(400)
+        if matches.matched_count == 1:
+            return img_data
 
-        return img_data
-
-    def update_headmaster(self, hello_data):
+    def update_headmaster(self, welcome_data):
         """
         Method is called on corresponding route 
         Updates the existing headmaster welcome data in the database 
         Returns the updated data if no errors, elsewise it returns the http status code for bad request ( 400 ) 
 
         Arguments: 
-        hello_data -- dictionary containing headmaster welcome data
+        welcome_data -- dictionary containing headmaster welcome data
 
         """
         check = ["image", "welcome_message"]
@@ -331,12 +341,14 @@ class DataHandler:
                     return abort(400)
             if sorted(check) != sorted(welcome_data.keys()):
                 return abort(400)
-            self.db.naslovnica.update_one(
-                data, {"$set": {"headmaster": welcome_data}})
+            matches = self.db.naslovnica.update_one(
+                {"headmaster": {"$exists": True}}, {"$set": {"headmaster": welcome_data}})
         except KeyError:
             return abort(400)
-
-        return hello_data
+        if matches.matched_count == 1:
+            return welcome_data
+        else:
+            return abort(400)
 
     def update_post(self, post_data):
         """
@@ -356,12 +368,16 @@ class DataHandler:
                     return abort(400)
             if sorted(check) != sorted(post_data.keys()):
                 return abort(400)
-            self.db.novosti.update_one(
-                {"_id": post_data['_id']}, {"$set": post_data})
+            post_data["_id"] = ObjectId(post_data["_id"])
+            matches = self.db.novosti.update_one(
+                {"_id": post_data["_id"]}, {"$set":post_data})
+
         except KeyError:
             return abort(400)
-
-        return post_data
+        if matches.matched_count == 1:
+            return post_data
+        else:
+            return abort(400)
 
     def update_achievement(self, achievement_data):
         """
@@ -381,13 +397,17 @@ class DataHandler:
                     return abort(400)
             if sorted(check) != sorted(achievement_data.keys()):
                 return abort(400)
-            self.db.postignuca.update_one(
+            achievement_data["_id"] = ObjectId(achievement_data["_id"])
+            matches = self.db.postignuca.update_one(
                 {"_id": achievement_data['_id']}, {"$set": achievement_data})
 
         except KeyError:
             return abort(400)
 
-        return achievement_data
+        if matches.matched_count == 1:
+            return achievement_data
+        else:
+            return abort(400)
 
     def update_contact(self, contact_data):
         """
@@ -407,12 +427,15 @@ class DataHandler:
                     return abort(400)
             if sorted(check) != sorted(contact_data.keys()):
                 return abort(400)
-            self.db.contacts.update_one(
+            contact_data["_id"] = ObjectId(contact_data["_id"])
+            matches = self.db.contacts.update_one(
                 {"_id": contact_data['_id']}, {"$set": contact_data})
         except KeyError:
             return abort(400)
-
-        return contact_data
+        if matches.matched_count == 1:
+            return contact_data
+        else:
+            return abort(400)
 
     def update_link(self, link_data):
         """
@@ -441,12 +464,15 @@ class DataHandler:
                 if link['name'] == link_data['name'] or link['link'] == link_data['link']:
                     current.remove(link)
                     break
-            self.db.update_one(
-                data, {'$set': {'links': current.append(link_data)}}
+            matches = self.db.naslovnica.update_one(
+                {"links":{"$exists":True}}, {'$set': {'links': current.append(link_data)}}
             )
         except KeyError:
             return abort(400)
-        return link_data
+        if matches.matched_count == 1:
+            return link_data
+        else:
+            return abort(400)
 
     def delete_post(self, post_data):
         """
@@ -461,8 +487,8 @@ class DataHandler:
 
         try:
             for post in self.db.novosti.find():
-                if post['_id'] == post_data['_id']:
-                    self.db.novosti.delete_one(post)
+                if post["_id"] == ObjectId(post_data["_id"]):
+                    self.db.novosti.delete_one({"_id": ObjectId(post["_id"])})
                     return post
         except KeyError:
             return abort(400)
@@ -481,8 +507,8 @@ class DataHandler:
         """
         try:
             for achievement in self.db.postignuca.find():
-                if achievement['_id'] == achievement_data['_id']:
-                    self.db.postignuca.delete_one(achievement)
+                if achievement['_id'] == ObjectId(achievement_data['_id']):
+                    self.db.postignuca.delete_one({"_id": ObjectId(achievement["_id"])})
                     return achievement
         except KeyError:
             return abort(400)
@@ -499,14 +525,19 @@ class DataHandler:
         college_data -- dictionary containing college data
 
         """
+
         data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
-        if not data:
+        if not data["colleges"]:
             return abort(400)
         current = data['colleges']
+        count = True
         for college in data['colleges']:
             if college['icon'] == college_data['icon']:
                 current.remove(college)
+                count = False
                 break
+        if count:
+            return abort(400)
 
         self.db.naslovnica.update_one(
             data, {'$set': {'colleges': current}}
