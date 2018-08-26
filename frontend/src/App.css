@@ -22,14 +22,16 @@
     width: 280px;
     height: 95px;
 }
-.text--zoo-block{
+.text--box{
     background: salmon;
     width: 505px;
     height: auto; 
     color: white;
-    font-size: 24px;
+    font-size: 24px;   
+    padding: 25px 40px;  
+}
+.text--box-zoo{
     position: absolute;
-    padding: 25px 40px;
     left: 50%;
     transform: translateX(-50%);
 }

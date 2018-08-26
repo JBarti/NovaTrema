@@ -60,6 +60,13 @@ class App extends Component {
       position: "relative"
     }
 
+    const competitionsBlock = {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "flex-end",
+      alignItems: "center",
+    }
+
     return (
       <div className="App">
         <ImageBlock></ImageBlock>
@@ -186,7 +193,12 @@ class App extends Component {
         <Block variant={zooBlock}>
           <ImageBlock width="50vw" height="844.5px"></ImageBlock>
           <ImageBlock width="50vw" height="844.5px"></ImageBlock>
-          <div className="text text--zoo-block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco</div>
+          <div className="text text--box text--box-zoo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco</div>
+        </Block>
+        <Block>
+          <ImageBlock width="100vw" height="844.5px" variant={competitionsBlock}>
+            <div className="text text--box">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco</div>
+          </ImageBlock>
         </Block>
       </div >
     );
