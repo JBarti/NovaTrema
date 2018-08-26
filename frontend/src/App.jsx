@@ -200,6 +200,38 @@ class App extends Component {
             <div className="text text--box">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco</div>
           </ImageBlock>
         </Block>
+        <Block paddingTop="50px"
+          paddingBottom="50px"
+          paddingLeft="250px"
+          paddingRight="250px"
+          backgroundColor="lightBlue"
+        >
+          <div>
+            <p><b>III.gimnazija, Split</b></p>
+            <p>Matice Hrvatske 11, 21000 Split, Hrvatska</p>
+            <p>OIB: 78950283030</p>
+            <div className="footer-images">
+              <ImageBlock width="64px" height="64px"></ImageBlock>
+              <ImageBlock width="64px" height="64px"></ImageBlock>
+              <ImageBlock width="64px" height="64px"></ImageBlock>
+            </div>
+          </div>
+          <div>
+            <p>+385 21 558 428 - Tajništvo</p>
+            <p>+385 21 558 421 - Ravnateljica</p>
+            <p>+385 21 558 420 - Centrala</p>
+          </div>
+          <div>
+            <p>E-dnevnik za učenike</p>
+            <p>E-dnevnik za roditelje</p>
+            <p>E-dnevnik za profesore</p>
+          </div>
+          <div>
+            <p>Loomen</p>
+            <p>eTrema</p>
+            <p>CARNet Webmail</p>
+          </div>
+        </Block>
       </div >
     );
   }

@@ -73,3 +73,12 @@
     flex-grow: 1;
     width: 100%;
 }
+
+.footer-images{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    
+}
