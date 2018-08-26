@@ -56,6 +56,10 @@ class App extends Component {
       flexDirection: "column"
     }
 
+    const zooBlock = {
+      position: "relative"
+    }
+
     return (
       <div className="App">
         <ImageBlock></ImageBlock>
@@ -178,6 +182,11 @@ class App extends Component {
           <ImageBlock width="258.75px" height="127.5px"></ImageBlock>
           <ImageBlock width="258.75px" height="127.5px"></ImageBlock>
           <ImageBlock width="258.75px" height="127.5px"></ImageBlock>
+        </Block>
+        <Block variant={zooBlock}>
+          <ImageBlock width="50vw" height="844.5px"></ImageBlock>
+          <ImageBlock width="50vw" height="844.5px"></ImageBlock>
+          <div className="text text--zoo-block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco</div>
         </Block>
       </div >
     );
