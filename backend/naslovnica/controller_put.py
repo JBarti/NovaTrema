@@ -189,14 +189,14 @@ class PutHandler:
                     abort(400)
             if sorted(check) != sorted(link_data.keys()):
                 return abort(400)
-            current = data['links']
             for link in data['links']:
                 if link['name'] == link_data['name'] or link['link'] == link_data['link']:
-                    current.remove(link)
+                    data["links"].remove(link)
                     break
+            data['links'].append(link_data)
             matches = self.db.naslovnica.update_one(
                 {"links": {"$exists": True}}, {
-                    '$set': {'links': current.append(link_data)}}
+                    '$set': {'links': data["links"]}}
             )
         except KeyError:
             return abort(400)

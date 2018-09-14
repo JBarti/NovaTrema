@@ -161,10 +161,10 @@ class PostHandler:
                     return abort(400)
             if sorted(college_data.keys()) != sorted(check):
                 return abort(400)
-            current = data['colleges']
+            data['colleges'].append(college_data)
             self.db.naslovnica.update_one(
                 {"colleges": {"$exists": True}},
-                {'$set': {'colleges': current.append(college_data)}})
+                {'$set': {'colleges': data["colleges"]}})
         except KeyError:
             return abort(400)
 
@@ -182,7 +182,6 @@ class PostHandler:
 
         """
         check = ["name", "icon"]
-
         data = self.db.naslovnica.find_one({'subjects': {'$exists': True}})
         if not data:
             self.db.naslovnica.insert({'subjects': []})
@@ -194,10 +193,13 @@ class PostHandler:
                     return abort(400)
                 if sorted(check) != sorted(subject_data.keys()):
                     return abort(400)
-            current = data['subjects']
+            print(data["subjects"])
+            data['subjects'].append(subject_data)
+            print(data["subjects"])
             self.db.naslovnica.update_one(
                 {"subjects": {"$exists": True}},
-                {'$set': {'subjects': current.append(subject_data)}})
+                {'$set': {'subjects': data["subjects"]}})
+            print(self.db.naslovnica.find_one({"subjects": {"$exists": True}}))
         except KeyError:
             return abort(400)
 
@@ -253,9 +255,9 @@ class PostHandler:
                     return abort(400)
             if sorted(link_data.keys()) != sorted(check):
                 return abort(400)
-            current = data['links']
+            data['links'].append(link_data)
             self.db.naslovnica.update_one(
-                {"links": {"$exists": True}}, {'$set': {'links': current.append(link_data)}})
+                {"links": {"$exists": True}}, {'$set': {'links': data["links"]}})
 
         except KeyError:
             return abort(400)
