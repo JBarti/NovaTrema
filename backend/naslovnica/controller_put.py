@@ -6,7 +6,7 @@ class PutHandler:
     def __init__(self, db):
         self.db = db
 
-    def call_function(self, value):
+    def call_function(self, value, data):
         switcher = {
             "image": self.update_image,
             "headmaster": self.update_headmaster,
@@ -17,7 +17,7 @@ class PutHandler:
             "link": self.update_link
         }
         case = switcher.get(value, None)
-        return case
+        return case(data)
 
     def update_image(self, img_data):
         """

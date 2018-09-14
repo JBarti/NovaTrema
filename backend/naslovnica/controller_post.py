@@ -10,7 +10,7 @@ class PostHandler:
     def __init__(self, db):
         self.db = db
 
-    def call_function(self, value):
+    def call_function(self, value, data):
         switcher = {
             "image": self.add_new_image,
             "headmaster": self.add_new_headmaster,
@@ -22,7 +22,7 @@ class PostHandler:
             "link": self.add_new_link
         }
         case = switcher.get(value, None)
-        return case
+        return case(data)
 
     def add_new_image(self, img_data):
         """

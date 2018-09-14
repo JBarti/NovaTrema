@@ -1,4 +1,6 @@
 from datetime import datetime
+from flask import jsonify
+from bson import ObjectId
 
 
 class GetHandler:
@@ -51,3 +53,17 @@ def parse_date(text_date):
     _min = int(lst_time[1])
 
     return datetime(yyyy, mm, dd, h, _min)
+
+
+def jsonify_objectId(data):
+    """
+    Deals with jsonifying ObjectId
+
+    Arguments:
+    data -- dictionary containing data
+
+    """
+    for key in data:
+        if isinstance(data[key], ObjectId):
+            data[key] = str(data[key])
+    return jsonify(data)

@@ -11,7 +11,7 @@ class DeleteHandler:
     def __init__(self, db):
         self.db = db
 
-    def call_function(self, value):
+    def call_function(self, value, data):
         switcher = {
             "post": self.delete_post,
             "achievement": self.delete_achievement,
@@ -21,7 +21,7 @@ class DeleteHandler:
             "link": self.delete_link
         }
         case = switcher.get(value, None)
-        return case
+        return case(data)
 
     def delete_post(self, post_data):
         """
