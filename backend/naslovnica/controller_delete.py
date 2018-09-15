@@ -82,18 +82,20 @@ class DeleteHandler:
         data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
         if not data["colleges"]:
             return abort(400)
-        current = data['colleges']
         count = True
         for college in data['colleges']:
+            print(college)
+            print(data['colleges'])
+            print(college_data)
             if college['icon'] == college_data['icon']:
-                current.remove(college)
+                data['colleges'].remove(college)
                 count = False
                 break
         if count:
             return abort(400)
 
         self.db.naslovnica.update_one(
-            data, {'$set': {'colleges': current}}
+            data, {'$set': {'colleges': data['colleges']}}
         )
         return college_data
 
@@ -133,7 +135,8 @@ class DeleteHandler:
 
         """
         for contact in self.db.contacts.find():
-            if contact['_id'] == contact_data['id']:
+            print(contact)
+            if contact['_id'] == ObjectId(contact_data['_id']):
                 self.db.postignuca.delete_one(contact)
                 return contact
         return abort(400)
@@ -152,13 +155,12 @@ class DeleteHandler:
         data = self.db.naslovnica.find_one({'links': {'$exists': True}})
         if not data:
             return abort(400)
-        current = data['links']
         for link in data['links']:
             if link['name'] == link_data['name']:
-                current.remove(link)
+                data['links'].remove(link)
                 break
 
         self.db.naslovnica.update_one(
-            data, {'$set': {'links': current}}
+            data, {'$set': {'links': data['links']}}
         )
         return link_data

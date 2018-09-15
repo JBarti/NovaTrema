@@ -32,18 +32,22 @@ class PutHandler:
         """
         check = ["url"]
 
-        data = self.db.naslovnica.find_one({'image': {'$exists': True}})
+        data = self.db.naslovnica.find_one({'back_image': {'$exists': True}})
         if not data:
+            print("it has been aborted on first if")
             return abort(400)
 
         try:
             if not isinstance(img_data['url'], str):
+                print("it has been aborted on second if")
                 return abort(400)
             if sorted(img_data.keys()) != sorted(check):
+                print("it has been aborted on third if")
                 return abort(400)
             matches = self.db.naslovnica.update_one(
-                {"headmaster": {"$exists": True}}, {"$set": {"image": img_data}})
+                {"back_image": {"$exists": True}}, {"$set": {"back_image": img_data}})
         except KeyError:
+            print("it has been aborted on fourth if")
             return abort(400)
         if matches.matched_count == 1:
             return img_data

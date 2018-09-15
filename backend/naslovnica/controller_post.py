@@ -152,7 +152,7 @@ class PostHandler:
         check = ["icon", "name"]
         data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
         if not data:
-            self.db.naslovnica.insert({'colleges': ["some value"]})
+            self.db.naslovnica.insert({'colleges': []})
             data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
 
         try:
