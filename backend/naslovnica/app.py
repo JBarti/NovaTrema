@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from config import db_create
+from sys import argv
 
 
 def app_create(debug=False):
@@ -40,4 +41,7 @@ if __name__ == '__main__':
     from routes import naslovnica_bp
     APP.register_blueprint(naslovnica_bp)
 
-    APP.run()
+    if argv[1]:
+        APP.run(port=int(argv[1]))
+    else:
+        APP.run()
