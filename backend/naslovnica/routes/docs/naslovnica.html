@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>naslovnica.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>naslovnica.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">MONGO</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">abort</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span> <span class="nn">controller_post</span> <span class="kn">import</span> <span class="n">PostHandler</span>
+<span class="kn">from</span> <span class="nn">controller_put</span> <span class="kn">import</span> <span class="n">PutHandler</span>
+<span class="kn">from</span> <span class="nn">controller_utility</span> <span class="kn">import</span> <span class="n">GetHandler</span><span class="p">,</span> <span class="n">jsonify_objectId</span>
+<span class="kn">from</span> <span class="nn">controller_delete</span> <span class="kn">import</span> <span class="n">DeleteHandler</span>
+
+<span class="n">naslovnica_bp</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s1">&#39;naslovnica_api&#39;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s1">&#39;/naslovnica&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Test route for /naslovnica blueprint</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@naslovnica_bp.route</span><span class="p">(</span><span class="s1">&#39;/test&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Returns:
+    str </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="s2">&quot;test&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Route which gets all the data needed for the homepage</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@naslovnica_bp.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">naslovnica</span><span class="p">():</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Returns:
+    <class flask.Response> &ndash; jsonified data needed for the homepage</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">data_handler</span> <span class="o">=</span> <span class="n">GetHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">get_page_data</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Route whose return value varies depending on value and method,</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@naslovnica_bp.route</span><span class="p">(</span><span class="s1">&#39;/&lt;value&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">elementi</span><span class="p">(</span><span class="n">value</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>it also makes a corresponding function call</p>
+<p>Arguments:
+    value {str} &ndash; url suffix which defines the route and function call</p>
+<p>Returns:
+    <class flask.Response> &ndash; jsonified data</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">data_handler</span> <span class="o">=</span> <span class="n">PostHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify_objectId</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;PUT&#39;</span><span class="p">:</span>
+        <span class="n">data_handler</span> <span class="o">=</span> <span class="n">PutHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify_objectId</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">:</span>
+        <span class="n">data_handler</span> <span class="o">=</span> <span class="n">DeleteHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify_objectId</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;This is a non existant route&quot;</span><span class="p">)</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

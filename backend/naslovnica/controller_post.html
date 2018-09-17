@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module controller_post</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>controller_post</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/tonino/Desktop/Tonino/Projekti/Trema/NovaTrema/backend/naslovnica/controller_post.py">/home/tonino/Desktop/Tonino/Projekti/Trema/NovaTrema/backend/naslovnica/controller_post.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="controller_post.html#PostHandler">PostHandler</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PostHandler">class <strong>PostHandler</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Class&nbsp;that&nbsp;handles&nbsp;post&nbsp;requests<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="PostHandler-__init__"><strong>__init__</strong></a>(self, db)</dt><dd><tt>The&nbsp;__init__&nbsp;method&nbsp;for&nbsp;<a href="#PostHandler">PostHandler</a>&nbsp;class<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db&nbsp;{&lt;class&nbsp;pymongo&gt;}&nbsp;--&nbsp;connection&nbsp;to&nbsp;database</tt></dd></dl>
+
+<dl><dt><a name="PostHandler-add_new_achievement"><strong>add_new_achievement</strong></a>(self, achievement_data)</dt><dd><tt>Function&nbsp;which&nbsp;adds&nbsp;a&nbsp;new&nbsp;achievement&nbsp;to&nbsp;the&nbsp;db<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;achievement_data&nbsp;{dict}<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict&nbsp;--&nbsp;achievement&nbsp;data&nbsp;which&nbsp;was&nbsp;received</tt></dd></dl>
+
+<dl><dt><a name="PostHandler-add_new_college"><strong>add_new_college</strong></a>(self, college_data)</dt><dd><tt>Function&nbsp;which&nbsp;adds&nbsp;new&nbsp;college&nbsp;info&nbsp;to&nbsp;the&nbsp;db<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;college_data&nbsp;{dict}<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict&nbsp;--&nbsp;college&nbsp;data&nbsp;which&nbsp;was&nbsp;received</tt></dd></dl>
+
+<dl><dt><a name="PostHandler-add_new_contact"><strong>add_new_contact</strong></a>(self, contact_data)</dt><dd><tt>Function&nbsp;which&nbsp;adds&nbsp;a&nbsp;new&nbsp;contact&nbsp;to&nbsp;the&nbsp;db<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;contact_data&nbsp;{dict}<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict&nbsp;--&nbsp;contact&nbsp;data&nbsp;which&nbsp;was&nbsp;received</tt></dd></dl>
+
+<dl><dt><a name="PostHandler-add_new_headmaster"><strong>add_new_headmaster</strong></a>(self, welcome_data)</dt><dd><tt>Function&nbsp;which&nbsp;adds&nbsp;headmaster&nbsp;data&nbsp;to&nbsp;the&nbsp;db<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;welcome_data&nbsp;{dict}<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict&nbsp;--&nbsp;welcome&nbsp;data&nbsp;which&nbsp;was&nbsp;received</tt></dd></dl>
+
+<dl><dt><a name="PostHandler-add_new_image"><strong>add_new_image</strong></a>(self, img_data)</dt><dd><tt>Function&nbsp;which&nbsp;adds&nbsp;a&nbsp;background&nbsp;image&nbsp;to&nbsp;the&nbsp;db<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;img_data&nbsp;{dict}<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict&nbsp;--&nbsp;image&nbsp;data&nbsp;which&nbsp;was&nbsp;received</tt></dd></dl>
+
+<dl><dt><a name="PostHandler-add_new_link"><strong>add_new_link</strong></a>(self, link_data)</dt><dd><tt>Function&nbsp;which&nbsp;adds&nbsp;a&nbsp;new&nbsp;link&nbsp;to&nbsp;the&nbsp;database<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;link_data&nbsp;{dict}<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict&nbsp;--&nbsp;link&nbsp;data&nbsp;which&nbsp;was&nbsp;received</tt></dd></dl>
+
+<dl><dt><a name="PostHandler-add_new_post"><strong>add_new_post</strong></a>(self, post_data)</dt><dd><tt>Function&nbsp;which&nbsp;adds&nbsp;a&nbsp;new&nbsp;post&nbsp;to&nbsp;the&nbsp;db<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;post_data&nbsp;{dict}<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict&nbsp;--&nbsp;post&nbsp;data&nbsp;which&nbsp;was&nbsp;received</tt></dd></dl>
+
+<dl><dt><a name="PostHandler-add_new_subject"><strong>add_new_subject</strong></a>(self, subject_data)</dt><dd><tt>Function&nbsp;which&nbsp;adds&nbsp;new&nbsp;subject&nbsp;info&nbsp;to&nbsp;the&nbsp;db<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;subject_data&nbsp;{dict}<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict&nbsp;--&nbsp;college&nbsp;data&nbsp;which&nbsp;was&nbsp;received</tt></dd></dl>
+
+<dl><dt><a name="PostHandler-call_function"><strong>call_function</strong></a>(self, value, data)</dt><dd><tt>Function&nbsp;which&nbsp;decides&nbsp;what&nbsp;is&nbsp;the&nbsp;method&nbsp;that&nbsp;will&nbsp;be&nbsp;called<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;{str}&nbsp;--&nbsp;the&nbsp;url&nbsp;suffix,&nbsp;the&nbsp;method&nbsp;which&nbsp;will&nbsp;be&nbsp;called&nbsp;depends&nbsp;on&nbsp;it<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data&nbsp;{dict}&nbsp;--&nbsp;data&nbsp;which&nbsp;is&nbsp;sent&nbsp;on&nbsp;the&nbsp;specific&nbsp;url<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;call&nbsp;--&nbsp;data&nbsp;which&nbsp;is&nbsp;returned&nbsp;if&nbsp;the&nbsp;data&nbsp;has&nbsp;been&nbsp;posted&nbsp;to&nbsp;the&nbsp;db&nbsp;successfully,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elsewise&nbsp;it&nbsp;returns&nbsp;an&nbsp;http&nbsp;status&nbsp;code</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>
