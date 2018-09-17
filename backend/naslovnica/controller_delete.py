@@ -12,6 +12,16 @@ class DeleteHandler:
         self.db = db
 
     def call_function(self, value, data):
+        """Function which decides what is the method that will be called
+
+         Arguments:
+             value {str} -- the url suffix, the method which will be called depends on it
+             data {dict} -- data which is sent on the specific url
+
+         Returns:
+             function call -- data which is returned if the data has been posted to the db successfully,
+             elsewise it returns an http status code
+         """
         switcher = {
             "post": self.delete_post,
             "achievement": self.delete_achievement,
@@ -24,15 +34,13 @@ class DeleteHandler:
         return case(data)
 
     def delete_post(self, post_data):
-        """
-        Method is called on corresponding route
-        Deletes a post from the database
-        Returns the deleted data if no errors,
-        elsewise it returns the http status code for bad request ( 400 )
+        """Function which deletes a post from the db
 
         Arguments:
-        post_data -- dictionary containing post data
+            post_data {dict}
 
+        Returns:
+            dict -- post data which was received
         """
 
         try:
@@ -41,21 +49,20 @@ class DeleteHandler:
                     self.db.novosti.delete_one({"_id": ObjectId(post["_id"])})
                     return post
         except KeyError:
-            return abort(400)
+            return abort(400, "The data you have sent does not have the required keys")
 
         return abort(400)
 
     def delete_achievement(self, achievement_data):
-        """
-        Method is called on corresponding route
-        Deletes a achievement from the database
-        Returns the deleted data if no errors,
-        elsewise it returns the http status code for bad request ( 400 )
+        """Function which deletes an achievement from the db
 
         Arguments:
-        achievement_data -- dictionary containing achievement data
+            achievement_data {dict}
 
+        Returns:
+            dict -- achievement data which was received
         """
+
         try:
             for achievement in self.db.postignuca.find():
                 if achievement['_id'] == ObjectId(achievement_data['_id']):
@@ -63,103 +70,104 @@ class DeleteHandler:
                         {"_id": ObjectId(achievement["_id"])})
                     return achievement
         except KeyError:
-            return abort(400)
+            return abort(400, "The data you have sent does not have the required keys")
 
         return abort(400)
 
     def delete_college(self, college_data):
-        """
-        Method is called on corresponding route
-        Deletes a college from the database
-        Returns the deleted data if no errors,
-        elsewise it returns the http status code for bad request ( 400 )
+        """Function which deletes a colleges' info from the db
 
         Arguments:
-        college_data -- dictionary containing college data
+            college_data {dict}
 
+        Returns:
+            dict -- college data which was received
         """
 
         data = self.db.naslovnica.find_one({'colleges': {'$exists': True}})
-        if not data["colleges"]:
-            return abort(400)
+        if not data:
+            return abort(400, "The data you are trying to delete does not yet exist")
         count = True
-        for college in data['colleges']:
-            print(college)
-            print(data['colleges'])
-            print(college_data)
-            if college['icon'] == college_data['icon']:
-                data['colleges'].remove(college)
-                count = False
-                break
-        if count:
-            return abort(400)
-
+        try:
+            for college in data['colleges']:
+                if college['icon'] == college_data['icon']:
+                    data['colleges'].remove(college)
+                    count = False
+                    break
+            if count:
+                return abort(400)
+        except KeyError:
+            return abort(400, "The data you have sent does not have the required keys")
         self.db.naslovnica.update_one(
             data, {'$set': {'colleges': data['colleges']}}
         )
         return college_data
 
     def delete_subject(self, subject_data):
-        """
-        Method is called on corresponding route
-        Deletes a subject from the database
-        Returns the deleted data if no errors,
-        elsewise it returns the http status code for bad request ( 400 )
+        """Function which deletes a subjects' info from the db
 
         Arguments:
-        subject_data -- dictionary containing subject data
+            subject_data {dict} 
 
+        Returns:
+            [type] -- subject data which was received
         """
+
         data = self.db.naslovnica.find_one({'subjects': {'$exists': True}})
         if not data:
-            return abort(400)
+            return abort(400, "The data you are trying to delete does not yet exist")
         current = data['subjects']
-        for subject in data['subjects']:
-            if subject['icon'] == subject_data['icon']:
-                current.remove(subject)
-                break
-
+        try:
+            for subject in data['subjects']:
+                if subject['icon'] == subject_data['icon']:
+                    current.remove(subject)
+                    break
+        except KeyError:
+            return abort(400, "The data you have sent does not have the required keys")
         self.db.naslovnica.update_one(
             data, {'$set': {'subjects': current}}
         )
         return subject_data
 
     def delete_contact(self, contact_data):
-        """
-        Method is called on corresponding route
-        Deletes a contact from the database
-        Returns the deleted data if no errors,elsewise it returns the http status code for bad request ( 400 )
+        """Function which deletes a contact from the db
 
         Arguments:
-        contact_data -- dictionary containing contact data
+            contact_data {dict}
 
+        Returns:
+            dict -- contact data which was received
         """
-        for contact in self.db.contacts.find():
-            print(contact)
-            if contact['_id'] == ObjectId(contact_data['_id']):
-                self.db.postignuca.delete_one(contact)
-                return contact
+        try:
+            for contact in self.db.contacts.find():
+                print(contact)
+                if contact['_id'] == ObjectId(contact_data['_id']):
+                    self.db.postignuca.delete_one(contact)
+                    return contact
+        except KeyError:
+            return abort(400, "The data you have sent does not have the required keys")
         return abort(400)
 
     def delete_link(self, link_data):
-        """
-        Method is called on corresponding route
-        Deletes a link from the database
-        Returns the deleted data if no errors,
-        elsewise it returns the http status code for bad request ( 400 )
+        """Function which deletes a links' info from the db
 
         Arguments:
-        link_data -- dictionary containing link data
+            link_data {dict}
 
+        Returns:
+            dict -- link data which was received
         """
+
         data = self.db.naslovnica.find_one({'links': {'$exists': True}})
         if not data:
-            return abort(400)
-        for link in data['links']:
-            if link['name'] == link_data['name']:
-                data['links'].remove(link)
-                break
-
+            return abort(400, "The data you are trying to delete does not yet exist")
+        try:
+            for link in data['links']:
+                if link['name'] == link_data['name']:
+                    data['links'].remove(link)
+                    break
+        except KeyError:
+            return abort(400, "The data you have sent does not have the required keys")
         self.db.naslovnica.update_one(
             data, {'$set': {'links': data['links']}}
         )

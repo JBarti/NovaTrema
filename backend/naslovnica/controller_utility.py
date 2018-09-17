@@ -8,7 +8,9 @@ class GetHandler:
         self.db = db
 
     def get_page_data(self):
-        """Returns data required for main page"""
+        """
+        Returns data required for main page
+        """
 
         data = self.db.naslovnica.find()
         list_of_posts = [post for post in self.db.novosti.find()]
@@ -29,12 +31,13 @@ class GetHandler:
 
 
 def parse_date(text_date):
-    """
-    Convert js datetime to python datetime
-    Returns a datetime object.
+    """Function which converts datetime from JS format to python datetime object
 
     Arguments:
-    text_date -- string in the format of javascript datetime objects
+        text_date {str} -- date in JS format 
+
+    Returns:
+        <class datetime.datetime> -- converted date
     """
 
     dict_month = {
@@ -56,13 +59,15 @@ def parse_date(text_date):
 
 
 def jsonify_objectId(data):
-    """
-    Deals with jsonifying ObjectId
+    """Function which deals with jsonifying the bson.ObjectId
 
     Arguments:
-    data -- dictionary containing data
+        data {dict} -- data containing possible ObjectId object
 
+    Returns:
+        <class flask.Response> -- jsonified data
     """
+
     for key in data:
         if isinstance(data[key], ObjectId):
             data[key] = str(data[key])

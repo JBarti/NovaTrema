@@ -4,6 +4,15 @@ from config import db_create
 
 
 def app_create(debug=False):
+    """[summary]
+
+    Keyword Arguments:
+        debug {bool} --  (default: {False})
+
+    Returns:
+        <class flask.Flask>, <classs flask_pymongo.PyMongo>
+    """
+
     app = Flask(__name__)
 
     mongo_db = db_create(app)

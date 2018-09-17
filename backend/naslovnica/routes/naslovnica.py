@@ -10,11 +10,23 @@ naslovnica_bp = Blueprint('naslovnica_api', __name__, url_prefix='/naslovnica')
 
 @naslovnica_bp.route('/test', methods=['GET'])
 def test():
+    """Test route for /naslovnica blueprint
+
+    Returns:
+        str 
+    """
+
     return "test"
 
 
 @naslovnica_bp.route('/', methods=['GET'])
 def naslovnica():
+    """Route which gets all the data needed for the homepage
+
+    Returns:
+        <class flask.Response> -- jsonified data needed for the homepage
+    """
+
     data_handler = GetHandler(MONGO.db)
     data = data_handler.get_page_data()
     return jsonify(data)
@@ -22,22 +34,30 @@ def naslovnica():
 
 @naslovnica_bp.route('/<value>', methods=['POST', 'PUT', 'DELETE'])
 def elementi(value):
+    """Route whose return value varies depending on value and method,
+    it also makes a corresponding function call
+
+    Arguments:
+        value {str} -- url suffix which defines the route and function call
+
+    Returns:
+        <class flask.Response> -- jsonified data
+    """
+
     data = request.get_json()
     if request.method == 'POST':
         data_handler = PostHandler(MONGO.db)
         func = data_handler.call_function(value, data)
         if func is not None:
             return jsonify_objectId(func)
-        return abort(400)
     if request.method == 'PUT':
         data_handler = PutHandler(MONGO.db)
         func = data_handler.call_function(value, data)
         if func is not None:
             return jsonify_objectId(func)
-        return abort(400)
     if request.method == 'DELETE':
         data_handler = DeleteHandler(MONGO.db)
         func = data_handler.call_function(value, data)
         if func is not None:
             return jsonify_objectId(func)
-        return abort(400)
+    return abort(400, "This is a non existant route")
