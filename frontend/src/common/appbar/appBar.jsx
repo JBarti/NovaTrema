@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Button from '../button/button.jsx'
-import SearchBar from '../search-bar/Search-bar.jsx'
+import SearchBar from '../search-bar/searchBar.jsx'
 import './AppBar.css'
 import '../search-bar/SearchBar.css'
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import AppBar from './common/appbar/AppBar.jsx'
+import AppBar from './common/appbar/appBar.jsx'
 import Button from './common/button/button.jsx'
-import SearchBar from './common/search-bar/Search-bar.jsx'
+import SearchBar from './common/search-bar/searchBar.jsx'
 import ImageBlock from './common/image-block/Image-block.jsx'
 import Block from './common/block/Block.jsx'
 
