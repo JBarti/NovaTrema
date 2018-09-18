@@ -131,7 +131,10 @@
         <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <p>Arguments:
-    img_data {dict}</p>
+    img_data {dict}:
+        {
+            &ldquo;url&rdquo;: str
+        }</p>
 <p>Returns:
     dict &ndash; image data which was received</p>
     </div>
@@ -176,7 +179,11 @@
         <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <p>Arguments:
-    welcome_data {dict}</p>
+    welcome_data {dict}:
+        {
+            &ldquo;image&rdquo; : str,
+            &ldquo;welcome_message&rdquo;: str
+        }</p>
 <p>Returns:
     dict &ndash; welcome data which was received</p>
     </div>
@@ -222,7 +229,15 @@
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
       <p>Arguments:
-    post_data {dict}</p>
+    post_data {dict}:
+         {
+             &ldquo;title&rdquo;: str,
+             &ldquo;body&rdquo;: str,
+             &ldquo;date&rdquo;: str,
+             &ldquo;image&rdquo;: str,
+             &ldquo;tldr&rdquo;:str,
+             &ldquo;author&rdquo;:str
+         }</p>
 <p>Returns:
     dict &ndash; post data which was received</p>
     </div>
@@ -262,7 +277,12 @@
         <a class='octothorpe' href='#section-14'>#</a>
       </div>
       <p>Arguments:
-    achievement_data {dict}</p>
+    achievement_data {dict}:
+        {
+            &ldquo;title&rdquo;: str,
+            &ldquo;image&rdquo;: str,
+            &ldquo;body&rdquo;: str
+        }</p>
 <p>Returns:
     dict &ndash; achievement data which was received</p>
     </div>
@@ -302,7 +322,11 @@
         <a class='octothorpe' href='#section-16'>#</a>
       </div>
       <p>Arguments:
-    college_data {dict}</p>
+    college_data {dict}:
+        {
+            &ldquo;icon&rdquo;:str,
+            &ldquo;name&rdquo;:str
+        }</p>
 <p>Returns:
     dict &ndash; college data which was received</p>
     </div>
@@ -348,7 +372,11 @@
         <a class='octothorpe' href='#section-18'>#</a>
       </div>
       <p>Arguments:
-    subject_data {dict}</p>
+    subject_data {dict}:
+        {
+            &ldquo;name&rdquo;:str,
+            &ldquo;icon&rdquo;:str
+        }</p>
 <p>Returns:
     dict &ndash; college data which was received</p>
     </div>
@@ -397,7 +425,12 @@
         <a class='octothorpe' href='#section-20'>#</a>
       </div>
       <p>Arguments:
-    contact_data {dict}</p>
+    contact_data {dict}:
+        {
+            &ldquo;name&rdquo;: str,
+            &ldquo;number&rdquo;:str,
+            &ldquo;mail&rdquo;:str
+        }</p>
 <p>Returns:
     dict &ndash; contact data which was received</p>
     </div>
@@ -437,7 +470,11 @@
         <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <p>Arguments:
-    link_data {dict}</p>
+    link_data {dict}:
+        {
+            &ldquo;name&rdquo;: str,
+            &ldquo;link&rdquo;: str
+        }</p>
 <p>Returns:
     dict &ndash; link data which was received</p>
     </div>

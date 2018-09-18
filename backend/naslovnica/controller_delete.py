@@ -37,7 +37,15 @@ class DeleteHandler:
         """Function which deletes a post from the db
 
         Arguments:
-            post_data {dict}
+            post_data {dict}:
+                {
+                    "title": str,
+                    "body": str,
+                    "date": str,
+                    "image": str,
+                    "tldr": str,
+                    "author": str
+                }
 
         Returns:
             dict -- post data which was received
@@ -57,7 +65,12 @@ class DeleteHandler:
         """Function which deletes an achievement from the db
 
         Arguments:
-            achievement_data {dict}
+            achievement_data {dict}:
+                {
+                    "title": str,
+                    "image": str,
+                    "body": str
+                }
 
         Returns:
             dict -- achievement data which was received
@@ -78,7 +91,11 @@ class DeleteHandler:
         """Function which deletes a colleges' info from the db
 
         Arguments:
-            college_data {dict}
+            college_data {dict}:
+                {
+                    "icon": str,
+                    "name": str
+                }
 
         Returns:
             dict -- college data which was received
@@ -107,7 +124,11 @@ class DeleteHandler:
         """Function which deletes a subjects' info from the db
 
         Arguments:
-            subject_data {dict} 
+            subject_data {dict}:
+                {
+                    "name": str,
+                    "icon": str
+                }
 
         Returns:
             [type] -- subject data which was received
@@ -133,7 +154,12 @@ class DeleteHandler:
         """Function which deletes a contact from the db
 
         Arguments:
-            contact_data {dict}
+            contact_data {dict}:
+                {
+                    "name": str,
+                    "number": str,
+                    "mail": str
+                }
 
         Returns:
             dict -- contact data which was received
@@ -152,7 +178,11 @@ class DeleteHandler:
         """Function which deletes a links' info from the db
 
         Arguments:
-            link_data {dict}
+            link_data {dict}:
+                {
+                    "name": str,
+                    "link": str
+                }
 
         Returns:
             dict -- link data which was received

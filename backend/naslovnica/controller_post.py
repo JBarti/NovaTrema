@@ -44,7 +44,10 @@ class PostHandler:
         """Function which adds a background image to the db
 
         Arguments:
-            img_data {dict}
+            img_data {dict}:
+                {
+                    "url": str
+                }
 
         Returns:
             dict -- image data which was received
@@ -74,7 +77,11 @@ class PostHandler:
         """Function which adds headmaster data to the db
 
         Arguments:
-            welcome_data {dict}
+            welcome_data {dict}:
+                {
+                    "image" : str,
+                    "welcome_message": str
+                }
 
         Returns:
             dict -- welcome data which was received
@@ -105,7 +112,15 @@ class PostHandler:
         """Function which adds a new post to the db
 
         Arguments:
-            post_data {dict}
+            post_data {dict}:
+                 {
+                     "title": str,
+                     "body": str,
+                     "date": str,
+                     "image": str,
+                     "tldr":str,
+                     "author":str
+                 }
 
         Returns:
             dict -- post data which was received
@@ -130,7 +145,12 @@ class PostHandler:
         """Function which adds a new achievement to the db
 
         Arguments:
-            achievement_data {dict}
+            achievement_data {dict}:
+                {
+                    "title": str,
+                    "image": str,
+                    "body": str
+                }
 
         Returns:
             dict -- achievement data which was received
@@ -155,7 +175,11 @@ class PostHandler:
         """Function which adds new college info to the db
 
         Arguments:
-            college_data {dict}
+            college_data {dict}:
+                {
+                    "icon":str,
+                    "name":str
+                }
 
         Returns:
             dict -- college data which was received
@@ -186,7 +210,11 @@ class PostHandler:
         """Function which adds new subject info to the db
 
         Arguments:
-            subject_data {dict}
+            subject_data {dict}:
+                {
+                    "name":str,
+                    "icon":str
+                }
 
         Returns:
             dict -- college data which was received
@@ -220,7 +248,12 @@ class PostHandler:
         """Function which adds a new contact to the db
 
         Arguments:
-            contact_data {dict}
+            contact_data {dict}:
+                {
+                    "name": str,
+                    "number":str,
+                    "mail":str
+                }
 
         Returns:
             dict -- contact data which was received
@@ -245,7 +278,11 @@ class PostHandler:
         """Function which adds a new link to the database
 
         Arguments:
-            link_data {dict}
+            link_data {dict}:
+                {
+                    "name": str,
+                    "link": str
+                }
 
         Returns:
             dict -- link data which was received

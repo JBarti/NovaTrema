@@ -44,7 +44,10 @@ class PutHandler:
         """Function which updates the background image in the db
 
         Arguments:
-            img_data {dict}
+            img_data {dict}:
+                {
+                    "url": str
+                }
 
         Returns:
             dict -- image data which was received
@@ -74,7 +77,11 @@ class PutHandler:
         """Function which updates the headmaster info in the db
 
         Arguments:
-            welcome_data {dict}
+            welcome_data {dict}:
+                {
+                    "image": str,
+                    "welcome_message": str
+                }
 
         Returns:
             dict -- welcome data which was received
@@ -104,7 +111,16 @@ class PutHandler:
         """Function which updates a post in the db
 
         Arguments:
-            post_data {dict}
+            post_data {dict}:
+                {
+                    "title": str,
+                    "body": str,
+                    "date": str,
+                    "image": str,
+                    "tldr": str,
+                    "author": str,
+                    "_id": str
+                }
 
         Returns:
             dict -- post data which was received
@@ -132,7 +148,13 @@ class PutHandler:
         """Function which updates an achievement in the db
 
         Arguments:
-            achievement_data {dict}
+            achievement_data {dict}:
+                {
+                    "title": str,
+                    "image": str,
+                    "body": str,
+                    "_id": str
+                }
 
         Returns:
             dict -- achievement data which was received
@@ -161,7 +183,13 @@ class PutHandler:
         """Function which updates a contact in the db
 
         Arguments:
-            contact_data {dict}
+            contact_data {dict}:
+                {
+                    "name": str,
+                    "number": str,
+                    "mail": str,
+                    "_id": str
+                }
 
         Returns:
             dict -- contact data which was received
@@ -188,7 +216,11 @@ class PutHandler:
         """Function which updates a link in the db
 
         Arguments:
-            link_data {dict}
+            link_data {dict}:
+                {
+                    "name": str,
+                    "link": str
+                }
 
         Returns:
             dict -- link data which was received

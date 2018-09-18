@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>controller_delete.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>controller_delete.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">abort</span>
+<span class="kn">from</span> <span class="nn">bson</span> <span class="kn">import</span> <span class="n">ObjectId</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Class used for handling delete requests</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DeleteHandler</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">db</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Function which decides what is the method that will be called</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">call_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Arguments:
+     value {str} &ndash; the url suffix, the method which will be called depends on it
+     data {dict} &ndash; data which is sent on the specific url</p>
+<p>Returns:
+     function call &ndash; data which is returned if the data has been posted to the db successfully,
+     elsewise it returns an http status code</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">switcher</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_post</span><span class="p">,</span>
+            <span class="s2">&quot;achievement&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_achievement</span><span class="p">,</span>
+            <span class="s2">&quot;college&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_college</span><span class="p">,</span>
+            <span class="s2">&quot;contact&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_contact</span><span class="p">,</span>
+            <span class="s2">&quot;subject&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_subject</span><span class="p">,</span>
+            <span class="s2">&quot;link&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_link</span>
+        <span class="p">}</span>
+        <span class="n">case</span> <span class="o">=</span> <span class="n">switcher</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">case</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Function which deletes a post from the db</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">delete_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post_data</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Arguments:
+    post_data {dict}:
+        {
+            &ldquo;title&rdquo;: str,
+            &ldquo;body&rdquo;: str,
+            &ldquo;date&rdquo;: str,
+            &ldquo;image&rdquo;: str,
+            &ldquo;tldr&rdquo;: str,
+            &ldquo;author&rdquo;: str
+        }</p>
+<p>Returns:
+    dict &ndash; post data which was received</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">novosti</span><span class="o">.</span><span class="n">find</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">post</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">post_data</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">novosti</span><span class="o">.</span><span class="n">delete_one</span><span class="p">({</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])})</span>
+                    <span class="k">return</span> <span class="n">post</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;The data you have sent does not have the required keys&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Function which deletes an achievement from the db</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">delete_achievement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">achievement_data</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Arguments:
+    achievement_data {dict}:
+        {
+            &ldquo;title&rdquo;: str,
+            &ldquo;image&rdquo;: str,
+            &ldquo;body&rdquo;: str
+        }</p>
+<p>Returns:
+    dict &ndash; achievement data which was received</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">achievement</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">postignuca</span><span class="o">.</span><span class="n">find</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">achievement</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">achievement_data</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">postignuca</span><span class="o">.</span><span class="n">delete_one</span><span class="p">(</span>
+                        <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">achievement</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])})</span>
+                    <span class="k">return</span> <span class="n">achievement</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;The data you have sent does not have the required keys&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Function which deletes a colleges&rsquo; info from the db</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">delete_college</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">college_data</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Arguments:
+    college_data {dict}:
+        {
+            &ldquo;icon&rdquo;: str,
+            &ldquo;name&rdquo;: str
+        }</p>
+<p>Returns:
+    dict &ndash; college data which was received</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">naslovnica</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s1">&#39;colleges&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$exists&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}})</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;The data you are trying to delete does not yet exist&quot;</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">college</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;colleges&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">college</span><span class="p">[</span><span class="s1">&#39;icon&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">college_data</span><span class="p">[</span><span class="s1">&#39;icon&#39;</span><span class="p">]:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;colleges&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">college</span><span class="p">)</span>
+                    <span class="n">count</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">count</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;The data you have sent does not have the required keys&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">naslovnica</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;$set&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;colleges&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;colleges&#39;</span><span class="p">]}}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">college_data</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Function which deletes a subjects&rsquo; info from the db</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">delete_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_data</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Arguments:
+    subject_data {dict}:
+        {
+            &ldquo;name&rdquo;: str,
+            &ldquo;icon&rdquo;: str
+        }</p>
+<p>Returns:
+    [type] &ndash; subject data which was received</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">naslovnica</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s1">&#39;subjects&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$exists&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}})</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;The data you are trying to delete does not yet exist&quot;</span><span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">subject</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;subjects&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">subject</span><span class="p">[</span><span class="s1">&#39;icon&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">subject_data</span><span class="p">[</span><span class="s1">&#39;icon&#39;</span><span class="p">]:</span>
+                    <span class="n">current</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
+                    <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;The data you have sent does not have the required keys&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">naslovnica</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;$set&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;subjects&#39;</span><span class="p">:</span> <span class="n">current</span><span class="p">}}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">subject_data</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Function which deletes a contact from the db</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">delete_contact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contact_data</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>Arguments:
+    contact_data {dict}:
+        {
+            &ldquo;name&rdquo;: str,
+            &ldquo;number&rdquo;: str,
+            &ldquo;mail&rdquo;: str
+        }</p>
+<p>Returns:
+    dict &ndash; contact data which was received</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">contact</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">contacts</span><span class="o">.</span><span class="n">find</span><span class="p">():</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">contact</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">contact</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">contact_data</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">postignuca</span><span class="o">.</span><span class="n">delete_one</span><span class="p">(</span><span class="n">contact</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">contact</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;The data you have sent does not have the required keys&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>Function which deletes a links&rsquo; info from the db</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">delete_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_data</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>Arguments:
+    link_data {dict}:
+        {
+            &ldquo;name&rdquo;: str,
+            &ldquo;link&rdquo;: str
+        }</p>
+<p>Returns:
+    dict &ndash; link data which was received</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">naslovnica</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s1">&#39;links&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$exists&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}})</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;The data you are trying to delete does not yet exist&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;links&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">link</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">link_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;links&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+                    <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;The data you have sent does not have the required keys&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">naslovnica</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;$set&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;links&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;links&#39;</span><span class="p">]}}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">link_data</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
