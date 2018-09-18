@@ -90,11 +90,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      <p>Route whose return value varies depending on value and method,</p>
+      <p>Route used for posting data.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="nd">@naslovnica_bp.route</span><span class="p">(</span><span class="s1">&#39;/&lt;value&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">elementi</span><span class="p">(</span><span class="n">value</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@naslovnica_bp.route</span><span class="p">(</span><span class="s1">&#39;/&lt;element&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">post_elements</span><span class="p">(</span><span class="n">element</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -103,29 +103,92 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
-      <p>it also makes a corresponding function call</p>
+      <p>Data which is received on this route is a dictionary containing
+the data concerning the element which is being posted.</p>
 <p>Arguments:
-    value {str} &ndash; url suffix which defines the route and function call</p>
+    element {str} &ndash; text value which defines which element will be posted</p>
 <p>Returns:
-    <class flask.Response> &ndash; jsonified data</p>
+    <class flask.Response> or html status code &ndash; jsonified data which has been received in the first place.
+    The data is returned in case of no errors, and the html status code in case of an error</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
-        <span class="n">data_handler</span> <span class="o">=</span> <span class="n">PostHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
-        <span class="n">func</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">jsonify_objectId</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;PUT&#39;</span><span class="p">:</span>
-        <span class="n">data_handler</span> <span class="o">=</span> <span class="n">PutHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
-        <span class="n">func</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">jsonify_objectId</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">:</span>
-        <span class="n">data_handler</span> <span class="o">=</span> <span class="n">DeleteHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
-        <span class="n">func</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">jsonify_objectId</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">data_handler</span> <span class="o">=</span> <span class="n">PostHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">dict_data</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">jsonify_objectId</span><span class="p">(</span><span class="n">dict_data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;This is a non existant route&quot;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Route used for updating data.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@naslovnica_bp.route</span><span class="p">(</span><span class="s1">&#39;/&lt;element&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">put_elements</span><span class="p">(</span><span class="n">element</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Data which is received on this route is a dictionary containing
+the data concerning the element which is being updated.</p>
+<p>Arguments:
+    element {str} &ndash; text value which defines which element will be updated</p>
+<p>Returns:
+    <class flask.Response> or html status code &ndash; jsonified data which has been received in the first place.
+    The data is returned in case of no errors, and the html status code in case of an error</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="n">data_handler</span> <span class="o">=</span> <span class="n">PutHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">dict_data</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">jsonify_objectId</span><span class="p">(</span><span class="n">dict_data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;This is a non existant route&quot;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Route used for deleteing data.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@naslovnica_bp.route</span><span class="p">(</span><span class="s1">&#39;/&lt;element&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DELETE&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">delete_elements</span><span class="p">(</span><span class="n">element</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Data which is received on this route is a dictionary containing
+the data concerning the element which is being deleted</p>
+<p>Arguments:
+    element {str} &ndash; text value which defines which element will be deleted.</p>
+<p>Returns:
+    <class flask.Response> or html status code &ndash; jsonified data which has been received in the first place.
+    The data is returned in case of no errors, and the html status code in case of an error</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="n">data_handler</span> <span class="o">=</span> <span class="n">DeleteHandler</span><span class="p">(</span><span class="n">MONGO</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">dict_data</span> <span class="o">=</span> <span class="n">data_handler</span><span class="o">.</span><span class="n">call_function</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">jsonify_objectId</span><span class="p">(</span><span class="n">dict_data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;This is a non existant route&quot;</span><span class="p">)</span>
 
 </pre></div>
