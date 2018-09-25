@@ -1,9 +1,11 @@
 from app import MONGO
-from flask import Blueprint, request, abort, jsonify
+from flask import Blueprint, request, abort, jsonify, session
 from controller_post import PostHandler
 from controller_put import PutHandler
 from controller_utility import GetHandler, jsonify_objectId
 from controller_delete import DeleteHandler
+from decorator import auth
+import uuid
 
 naslovnica_bp = Blueprint('naslovnica_api', __name__, url_prefix='/naslovnica')
 
@@ -18,6 +20,30 @@ def test():
 
     return "test"
 
+@naslovnica_bp.route('/login', methods=['POST'])
+def login():
+    username= "Mirko"
+    password= "Mirko"
+    if 'id' not in session:
+        auth_data = request.get_json()
+        if auth_data["username"] == username and auth_data["password"] == password:
+            session['id'] = uuid.uuid4().bytes
+            return "<h1>Uspia si</h1>"
+        else:
+            return "<h1>No no amigo</h1>"
+    return "<h1>ID is in session</h1>"
+    
+@naslovnica_bp.route('/logout')
+def logout():
+    if 'id' in session:
+        session.pop('id')
+        return "<h1>Successfully logged out</h1>"
+    return "<h1>Nisi loginan biseru</h1>"
+
+@naslovnica_bp.route('/admin/test')
+@auth
+def admin_test():
+    return "Access granted"
 
 @naslovnica_bp.route('/', methods=['GET'])
 def naslovnica():

@@ -15,7 +15,8 @@ def app_create(debug=False):
     """
 
     app = Flask(__name__)
-
+    app.config['DEBUG'] = True
+    app.config['SECRET_KEY'] = '6E732C635B575C7831315C7839645C783830505C7830385C786234225C7838645C7838383B3F4B7D5C786633475C7866654F5C783063'
     mongo_db = db_create(app)
     CORS(app)
 
