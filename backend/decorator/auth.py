@@ -8,3 +8,4 @@ def auth(func):
             return func(*args,**kwargs)
         return "<h1>Dude you not logged in go and make yo momma proud</h1>"
     return decorated_func
+    

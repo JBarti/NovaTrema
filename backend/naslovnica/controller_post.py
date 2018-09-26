@@ -86,10 +86,11 @@ class PostHandler:
         Returns:
             dict -- welcome data which was received
         """
-
         check = ["image", "welcome_message"]
 
+        print("IM here")
         data = self.db.naslovnica.find_one({'headmaster': {'$exists': True}})
+        print("IM here again")
         if not data:
             self.db.naslovnica.insert({'headmaster': {}})
             data = self.db.naslovnica.find_one(

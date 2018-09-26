@@ -20,12 +20,18 @@ def test():
 
     return "test"
 
+@naslovnica_bp.route('/admin/test')
+@auth
+def admin_test():
+    return "Access granted"
+
 @naslovnica_bp.route('/login', methods=['POST'])
 def login():
-    username= "Mirko"
-    password= "Mirko"
+    username= "mirko"
+    password= "mirko"
     if 'id' not in session:
         auth_data = request.get_json()
+        print(auth_data)
         if auth_data["username"] == username and auth_data["password"] == password:
             session['id'] = uuid.uuid4().bytes
             return "<h1>Uspia si</h1>"
@@ -40,10 +46,6 @@ def logout():
         return "<h1>Successfully logged out</h1>"
     return "<h1>Nisi loginan biseru</h1>"
 
-@naslovnica_bp.route('/admin/test')
-@auth
-def admin_test():
-    return "Access granted"
 
 @naslovnica_bp.route('/', methods=['GET'])
 def naslovnica():
@@ -59,6 +61,7 @@ def naslovnica():
 
 
 @naslovnica_bp.route('/<element>', methods=['POST'])
+@auth
 def post_elements(element):
     """Route used for posting data.
     Data which is received on this route is a dictionary containing
@@ -81,6 +84,7 @@ def post_elements(element):
 
 
 @naslovnica_bp.route('/<element>', methods=['PUT'])
+@auth
 def put_elements(element):
     """Route used for updating data.
     Data which is received on this route is a dictionary containing
@@ -102,6 +106,7 @@ def put_elements(element):
 
 
 @naslovnica_bp.route('/<element>', methods=['DELETE'])
+@auth
 def delete_elements(element):
     """Route used for deleteing data.
     Data which is received on this route is a dictionary containing
