@@ -1,52 +1,59 @@
-.intro-block__title{
+.intro-block__title {
     font-size: 42px;
     position: relative;
     left: -75px;
 }
-.intro-block__text{
+
+.intro-block__text {
     height: 290px;
     width: 550px;
     text-align: justify;
 }
-.title{
+
+.title {
     font-size: 18px;
     text-transform: uppercase;
     margin: 0;
     margin-bottom: 20px;
 }
-.text{
+
+.text {
     text-align: justify;
     margin: 0;
 }
-.text--newsDemo{
+
+.text--newsDemo {
     width: 280px;
     height: 95px;
 }
-.text--box{
-    background: salmon;
+
+.text--box {
     width: 505px;
-    height: auto; 
+    background: gray;
+    height: auto;
     color: white;
-    font-size: 24px;   
-    padding: 25px 40px;  
+    font-size: 24px;
+    padding: 25px 40px;
 }
-.text--box-zoo{
+
+.text--box-zoo {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.achievment{
+.achievment {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.title--achievment{
+
+.title--achievment {
     margin-top: 20px;
 }
 
-.navigation{
+.navigation {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -54,18 +61,20 @@
     width: 45px;
     margin-top: 40px;
 }
-.navigation-ball{
+
+.navigation-ball {
     width: 10px;
     height: 10px;
     background: white;
     border-radius: 100%;
 }
-.navigation-ball--selected{
+
+.navigation-ball--selected {
     background: transparent;
     border: solid lightslategray 2px
 }
 
-.achievment-container{
+.achievment-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -74,11 +83,10 @@
     width: 100%;
 }
 
-.footer-images{
+.footer-images {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     flex-grow: 1;
-    
 }

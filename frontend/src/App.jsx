@@ -19,14 +19,14 @@ class App extends Component {
   render() {
 
     const appBarBig = {
-      backgroundColor: "#ffdd23",
+      backgroundColor: "gray",
       height: "62.5px"
     }
 
     const appBarSmallStyle = {
       paddingRight: "50px",
       paddingLeft: '50px',
-      backgroundColor: "#3ab0b2",
+      backgroundColor: "lightgray",
       color: "white",
       height: "46px"
     }
@@ -94,7 +94,7 @@ class App extends Component {
           paddingBottom="120px"
           paddingLeft="156px"
           paddingRight="156px"
-          backgroundColor="lightBlue"
+          backgroundColor="gray"
         >
           <ImageBlock height="429.75px" width="600.75px" />
           <div>
@@ -107,7 +107,7 @@ class App extends Component {
           paddingBottom="120px"
           paddingLeft="321px"
           paddingRight="321px"
-          backgroundColor="lightCoral"
+          backgroundColor="lightgray"
         >
           <div>
             <ImageBlock
@@ -147,7 +147,7 @@ class App extends Component {
           paddingBottom="40px"
           paddingLeft="150px"
           paddingRight="150px"
-          backgroundColor="lightBlue"
+          backgroundColor="Gray"
           variant={achievmentStyle}
         >
           <div className="achievment-container">
@@ -183,7 +183,7 @@ class App extends Component {
           paddingBottom="65px"
           paddingLeft="160px"
           paddingRight="160px"
-          backgroundColor="lightCoral"
+          backgroundColor="lightgray"
         >
           <ImageBlock width="258.75px" height="127.5px"></ImageBlock>
           <ImageBlock width="258.75px" height="127.5px"></ImageBlock>
@@ -204,7 +204,7 @@ class App extends Component {
           paddingBottom="50px"
           paddingLeft="250px"
           paddingRight="250px"
-          backgroundColor="lightBlue"
+          backgroundColor="Gray"
         >
           <div>
             <p><b>III.gimnazija, Split</b></p>
