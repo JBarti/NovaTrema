@@ -17,6 +17,9 @@ class PymgurApi:
     def upload_image(self, img_object):
         """function for uploading a python image object to pymgur
 
+        Keyword arguments: 
+            img_object (_io.TextIOWrapper) -- python file object containing the image being sent to pymgur
+
         Returns:
             json: a json object with format {'img_url': <url of image posted to pymgur api>}
         """
