@@ -46,7 +46,7 @@ class PutHandler:
         Arguments:
             img_data {dict}:
                 {
-                    "url": str
+                    "img_url": str
                 }
 
         Returns:
@@ -61,7 +61,7 @@ class PutHandler:
             return abort(400)
 
         try:
-            if not isinstance(img_data['url'], str):
+            if not isinstance(img_data['img_url'], str):
                 return abort(400, "The data you have sent contains different value types than needed")
             if sorted(img_data.keys()) != sorted(check):
                 return abort(400, "The data you have sent contains a different set of keys than needed")
@@ -79,7 +79,7 @@ class PutHandler:
         Arguments:
             welcome_data {dict}:
                 {
-                    "image": str,
+                    "img_url": str,
                     "welcome_message": str
                 }
 
@@ -87,7 +87,7 @@ class PutHandler:
             dict -- welcome data which was received
         """
 
-        check = ["image", "welcome_message"]
+        check = ["img_url", "welcome_message"]
 
         data = self.db.naslovnica.find_one({'headmaster': {'$exists': True}})
         if not data:
@@ -116,7 +116,7 @@ class PutHandler:
                     "title": str,
                     "body": str,
                     "date": str,
-                    "image": str,
+                    "img_url": str,
                     "tldr": str,
                     "author": str,
                     "_id": str
@@ -126,7 +126,7 @@ class PutHandler:
             dict -- post data which was received
         """
 
-        check = ["title", "body", "date", "image", "tldr", "author", "_id"]
+        check = ["title", "body", "date", "img_url", "tldr", "author", "_id"]
 
         try:
             for key in post_data:
@@ -151,7 +151,7 @@ class PutHandler:
             achievement_data {dict}:
                 {
                     "title": str,
-                    "image": str,
+                    "img_url": str,
                     "body": str,
                     "_id": str
                 }
@@ -160,7 +160,7 @@ class PutHandler:
             dict -- achievement data which was received
         """
 
-        check = ["title", "image", "body", "_id"]
+        check = ["title", "img_url", "body", "_id"]
 
         try:
             for key in achievement_data:

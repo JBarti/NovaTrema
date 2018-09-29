@@ -33,7 +33,7 @@ def post_image():
         return abort(400, 'File with same name already exists')
 
     image.save('./pymgur/static/{}'.format(filename))
-    return jsonify({'img_url': request.base_url+filename})
+    return request.base_url+filename
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ from controller_post import PostHandler
 from controller_put import PutHandler
 from controller_utility import GetHandler, jsonify_objectId
 from controller_delete import DeleteHandler
+from pymgur import PymgurApi
 from decorator import auth
 import uuid
 
@@ -76,6 +77,12 @@ def post_elements(element):
     """
 
     data = request.get_json()
+    image = request.files()
+    if image is not None:
+        pymgur = PymgurApi("http://127.0.0.1:3001/naslovnica/")
+        img_url = pymgur.upload_image(image)
+        data["img_url"] = img_url
+
     data_handler = PostHandler(MONGO.db)
     dict_data = data_handler.call_function(element, data)
     if isinstance(dict_data, dict):

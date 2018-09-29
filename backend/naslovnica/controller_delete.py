@@ -42,7 +42,7 @@ class DeleteHandler:
                     "title": str,
                     "body": str,
                     "date": str,
-                    "image": str,
+                    "img_url": str,
                     "tldr": str,
                     "author": str
                 }
@@ -68,7 +68,7 @@ class DeleteHandler:
             achievement_data {dict}:
                 {
                     "title": str,
-                    "image": str,
+                    "img_url": str,
                     "body": str
                 }
 
