@@ -1,4 +1,4 @@
-from flask import Flask, send_file, flash, request, abort, jsonify
+from flask import Flask, send_file, request, abort, jsonify
 from flask_cors import CORS
 from os import listdir
 from sys import argv
@@ -20,7 +20,7 @@ def get_image(filename):
 @APP.route('/', methods=['POST'])
 def post_image():
     try:
-        image = request.files['image']
+        image = request.files['img']
     except KeyError:
         return abort(400, 'No file sent')
 
@@ -29,11 +29,10 @@ def post_image():
     if extension not in ['jpg', 'jpeg', 'png', 'bmp', 'gif']:
         return abort(400, 'Bad file name')
 
-    if filename in listdir('./static'):
-        return abort(400, 'File already exists')
+    if filename in listdir('./pymgur/static'):
+        return abort(400, 'File with same name already exists')
 
-    image.save('./static/{}'.format(filename))
-
+    image.save('./pymgur/static/{}'.format(filename))
     return jsonify({'img_url': request.base_url+filename})
 
 
