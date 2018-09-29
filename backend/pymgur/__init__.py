@@ -28,3 +28,15 @@ class PymgurApi:
             return r.json()
         except:
             return r.status_code
+    
+    def get_image(self):
+        """function for retrieving image from pymgur api
+
+        Returns:
+            json: a python file object
+        """
+        try:
+            r = requests.get(self.pymgur_url)
+            return r.content
+        except:
+            return r.status_code

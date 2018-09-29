@@ -5,6 +5,7 @@ if [ "$1" == "help" ]
 then
     echo "config -- runs pipenv shell and exports needed python packages"
     echo "naslovnica -- starts naslovnica microservice"
+    echo "pymgur -- starts pymgur microservice"
     exit 1
 fi
 

@@ -105,6 +105,11 @@ def put_elements(element):
         The data is returned in case of no errors, and the html status code in case of an error
     """
     data = request.get_json()
+        image = request.files()
+    if image is not None:
+        pymgur = PymgurApi("http://127.0.0.1:3001/naslovnica/")
+        img_url = pymgur.upload_image(image)
+        data["img_url"] = img_url
     data_handler = PutHandler(MONGO.db)
     dict_data = data_handler.call_function(element, data)
     if isinstance(dict_data, dict):
