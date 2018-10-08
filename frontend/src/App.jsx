@@ -67,6 +67,15 @@ class App extends Component {
       alignItems: "center",
     }
 
+    const appBarBigSearchBar = {
+      border: "none",
+      background: "transparent",
+      height: "fitContent",
+      position: "absolute",
+      width: "70px",
+      right: "50px",
+    }
+
     return (
       <div className="App">
         <ImageBlock></ImageBlock>
@@ -80,6 +89,7 @@ class App extends Component {
             value={this.state.value}
             name='appBar1'
             onChange={this.inputHandler}
+            style={appBarBigSearchBar}
           ></SearchBar>
         </AppBar>
         <AppBar style={appBarSmallStyle}>

@@ -1,0 +1,19 @@
+.content{
+    display: flex;
+    margin-top: 50px;
+    flex-direction: row;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.tag-bar{
+    height: 300px;
+    width: 15.75%;
+    background-color: gray;
+    padding: 14px 10px;
+    box-sizing: border-box;
+}
+.tag-bar__result{
+    margin-top: 20px;
+    height: 80%;
+    overflow-y: scroll;
+}
